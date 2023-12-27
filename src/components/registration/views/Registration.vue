@@ -2,9 +2,9 @@
   <BaseTemplate>
     <div v-if="!isLoading" class="container">
       <div class="row d-flex justify-content-center mt-5">
-        <div class="col-12">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-5">
           <form @submit.prevent="onSubmit(editRegistration)" class="bg-white rounded-2 p-3">
-            <h3 class="text-decoration-underline text-center mb-3">Inscription</h3>
+            <h3 class="text-decoration-underline text-center fs-4 mb-3">Inscription</h3>
             <div class="mb-3">
               <label for="firstName" class="form-label">Prénom</label>
               <input v-model="editRegistration.firstName" type="text" class="form-control">

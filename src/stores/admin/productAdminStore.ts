@@ -26,6 +26,11 @@ export const useProductAdminStore = defineStore('productAdminStore', {
             .then(response => response.data)
             .catch(error => console.error(error))
         },
+        initFilterProduct() {
+            this.productFilter = {
+                title: ''
+            }
+        },
         async getProductItem(id) {
             this.editProduct = await axios.get(`https://127.0.0.1:8000/admin/product/${id}`, {
                 headers: {

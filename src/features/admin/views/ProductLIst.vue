@@ -1,12 +1,12 @@
 <template>
   <div v-if="!isLoading" class="container">
-    <div class="d-flex align-items-center justify-content-center mt-3">
-      <div class="d-flex align-items-center flex-row search">
-        <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="icon" />
-        <input v-model="productFilter.title" type="search" class="ms-2">
-        <Button @click="filtersProducts" class="p-1">Search</Button>
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center flex-row mt-3 search">
+        <input v-model="productFilter.title" type="search" class="input-search" placeholder="Rechercher">
+        <font-awesome-icon @click="filtersProducts" icon="fa-solid fa-magnifying-glass" class="icon" />
       </div>
     </div>
+
     <nav class="my-3">
       <ul class="list-inline">
         <li v-for="product in products" :key="product.id" class="d-flex align-items-center flex-row border border-1 px-3 py-2 rounded-2 bg-white mb-3">
@@ -18,13 +18,17 @@
           </div>
           <div class="d-flex align-items-center flex-row">
             <router-link :to="{name: 'admin-product-edit', params: {id: product.id}}">
-              <font-awesome-icon icon="fa-solid fa-pen-to-square" class="text-muted icon"/>
+              <font-awesome-icon icon="fa-solid fa-pen-to-square" class="text-muted me-1 icon"/>
             </router-link>
             <font-awesome-icon @click="deleteProduct(product.id)" icon="fa-solid fa-trash" class="text-danger icon" />
           </div>
         </li>
       </ul>
     </nav>
+
+    <div class="d-flex align-items-center flex-column justify-content-center mb-3">
+      <Button @click="reinitialisation" class="bg-danger btn-reinitialisation">Réinitialisation</Button>
+    </div>
   </div>
 </template>
 
@@ -45,12 +49,17 @@ onMounted(async () => {
   isLoading.value = false
 })
 
+const deleteProduct = async (id) => {
+  await productAdminStore.deleteProduct(id)
+}
+
 const filtersProducts = async () => {
   await productAdminStore.getProducts()
 }
 
-const deleteProduct = async (id) => {
-  await productAdminStore.deleteProduct(id)
+const reinitialisation = async () => {
+  productAdminStore.initFilterProduct()
+  await productAdminStore.getProducts()
 }
 </script>
 
@@ -59,33 +68,36 @@ const deleteProduct = async (id) => {
   overflow-y: auto;
   height: calc(100vh - 160px);
 }
-p {
-  font-size: 14px;
-}
-
-.icon {
-  cursor: pointer;
-  font-size: 17px;
-  margin: 0 4px;
-}
 
 .search {
-  border: var(--border);
-  border-radius: 6px;
+  border-top: var(--border);
+  border-left: var(--border);
+  border-bottom: var(--border);
   background-color: var(--text-primary-color);
-  padding: 10px;
-  input {
-    width: 300px;
+  border-radius: 6px 0 0 6px;
+  padding-left: 4px;
+  .input-search {
     border: 0;
+    width: 400px;
     outline: none;
   }
   .icon {
-    font-size: 18px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: var(--gray-3);
+    color: var(--text-primary-color);
+    border-radius: 0 6px 6px 0;
+    padding: 12px;
+    width: 30px;
+    border: 2px solid var(--gray-3);
   }
 }
 
-.btn {
-  padding: 13px;
-  margin-left: 3px;
+.btn-reinitialisation {
+  width: 120px;
+}
+
+p {
+  font-size: 14px;
 }
 </style>

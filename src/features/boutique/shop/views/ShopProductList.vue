@@ -19,6 +19,6 @@ defineProps<{
 
 <style scoped lang="scss">
 .shop-product-list {
-  gap: 12px;
+  gap: 14px;
 }
 </style>

@@ -2,9 +2,9 @@
   <BaseTemplate>
     <div v-if="!isLoading" class="container">
       <div class="row d-flex justify-content-center align-items-center mt-5">
-        <div class="col-12">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-5">
           <form @submit.prevent="onSubmit" class="bg-white rounded-2 p-3">
-            <h3 class="text-decoration-underline text-center mb-3">Connexion</h3>
+            <h3 class="text-decoration-underline text-center fs-5 mb-3">Connexion</h3>
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <input v-model="editLogin.email" type="email" class="form-control" aria-describedby="emailHelp" autofocus>

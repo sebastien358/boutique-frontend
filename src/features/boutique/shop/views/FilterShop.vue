@@ -1,9 +1,8 @@
 <template>
-  <div class="d-flex flex-column pt-3 pb-2 px-2 filterShop z-1">
+  <div class="d-flex flex-column pt-3 pb-2 px-2 filterShop z-2">
     <div class="d-flex align-items-center flex-row mb-4 search">
-      <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="icon me-1" />
-      <input v-model="productsFilters.title" type="search" placeholder="Rechercher">
-      <Button @click="onClickFilterTitle" class="btn-search">Go</Button>
+      <input v-model="productsFilters.title" type="search" class="input-search" placeholder="Rechercher">
+      <font-awesome-icon @click="onClickFilterTitle" icon="fa-solid fa-magnifying-glass" class="icon" />
     </div>
 
     <div class="d-flex flex-column mb-4">
@@ -87,21 +86,26 @@ const reinitialisation = async () => {
     height: auto;
   }
   .search {
-    border: var(--border);
-    border-radius: 6px;
+    border-top: var(--border);
+    border-left: var(--border);
+    border-bottom: var(--border);
     background-color: var(--text-primary-color);
-    padding: 6px;
-    input {
+    border-radius: 6px 0 0 6px;
+    padding-left: 4px;
+    .input-search {
       border: 0;
+      width: 100%;
       outline: none;
     }
-    .btn-search {
-      position: relative;
-      right: 27px;
-      font-size: 12px;
-    }
     .icon {
-      font-size: 15px;
+      cursor: pointer;
+      font-size: 16px;
+      background-color: var(--gray-3);
+      color: var(--text-primary-color);
+      border-radius: 0 6px 6px 0;
+      padding: 12px;
+      width: 30px;
+      border: 2px solid var(--gray-3);
     }
   }
   label {

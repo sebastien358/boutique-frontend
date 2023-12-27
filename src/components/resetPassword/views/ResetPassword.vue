@@ -2,7 +2,7 @@
   <BaseTemplate>
     <div class="container">
       <div class="row d-flex justify-content-center mt-5">
-        <div class="col-12">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-6">
           <form @submit.prevent="onSubmit" class="bg-white rounded-2 p-3">
             <div class="mb-3">
               <label for="password" class="form-label">Mot de passe</label>
@@ -12,7 +12,7 @@
               <label for="password" class="form-label">Confirmation</label>
               <input ref="confirm" type="password" class="form-control">
             </div>
-            <SubmitButton>Réinitialisation de mot de passe</SubmitButton>
+            <SubmitButton>Modifier mot de passe</SubmitButton>
           </form>
         </div>
       </div>
@@ -47,3 +47,9 @@ const onSubmit = async () => {
   await router.push({name: 'login'})
 }
 </script>
+
+<style scoped lang="scss">
+label {
+  font-size: 14px;
+}
+</style>

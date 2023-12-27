@@ -54,6 +54,14 @@ export const useProductStore = defineStore('productStore', {
             return this.cart.reduce((acc, product) => {
                 return (acc + product.price) * product.quantity
             }, 0)
+        },
+        deleteProductToCart(id: number) {
+            const product = this.cart.find(product => product.id === id)
+            if (product.quantity === 1) {
+                this.cart = this.cart.filter(product => product.id !== id)
+            } else {
+                product.quantity--
+            }
         }
     }
 })

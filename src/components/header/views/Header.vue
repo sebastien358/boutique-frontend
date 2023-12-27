@@ -37,7 +37,33 @@
     </nav>
 
     <nav class="d-block d-lg-none">
-      <font-awesome-icon icon="fa-solid fa-bars" class="text-white fs-5" />
+      <Calc @close="state.open = false" :open="state.open" :transparent="true" />
+      <font-awesome-icon @click="state.open = !state.open" icon="fa-solid fa-bars" class="text-white fs-5 icon" />
+      <Transition mode="in-out">
+        <ul v-if="state.open" class="list-inline d-flex flex-column m-0 menu-mobile">
+          <li>
+            <router-link :to="{name: 'boutique'}" class="router-link">
+              Boutique
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{name: 'admin'}" class="router-link">
+              Admin
+            </router-link>
+          </li>
+          <li v-if="userAdminStore.isLogged()">
+            <a @click="disconnect" href="#" class="text-danger router-link">Déconnexion</a>
+          </li>
+          <li v-else class="d-flex flex-column">
+            <router-link :to="{name: 'registration'}" class="router-link me-1">
+              Inscription
+            </router-link>
+            <router-link :to="{name: 'login'}" class="text-success router-link">
+              Connexion
+            </router-link>
+          </li>
+        </ul>
+      </Transition>
     </nav>
   </header>
 </template>
@@ -45,6 +71,14 @@
 <script setup lang="ts">
 import {useUserAdminStore} from "@/stores/admin/userAdminStore";
 import {useRouter} from "vue-router";
+import Calc from "@/components/calc/components/Calc.vue";
+import {reactive} from "vue";
+
+const state = reactive<{
+  open: boolean
+}>({
+  open: false
+})
 
 const userAdminStore = useUserAdminStore()
 
@@ -57,13 +91,51 @@ const disconnect = () => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/css/mixins' as m;
 header {
   background-color: var(--primary-1);
   height: 60px;
+  .router-link {
+    color: var(--text-primary-color);
+    font-size: 15px;
+    text-decoration: none;
+    @include m.lg {
+      color: var(--text-color);
+    }
+  }
+  .icon {
+    cursor: pointer;
+    font-size: 22px;
+  }
 }
 
-.router-link {
-  color: var(--text-primary-color);
-  font-size: 15px;
+.menu-mobile {
+  position: absolute;
+  background-color: var(--text-primary-color);
+  border: var(--border);
+  width: 230px;
+  height: calc(100vh - 60px);
+  padding: 10px 20px;
+  top: 60px;
+  left: 0;
+  li, .router-link {
+    margin-bottom: 10px;
+  }
+}
+
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: 0.25s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+a.router-link-active {
+  text-decoration: underline;
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
-  <div class="card">
-    <img :src="product.pictures[0]" class="card-img-top object-fit-fill" alt="..." height="300">
-    <div class="card-body">
-      <h5 class="card-title text-uppercase fw-semibold m-0 pb-3">{{product.title}}</h5>
-      <p class="card-text m-0 pb-3">{{product.description}}</p>
-      <div class="d-flex align-items-center justify-content-between">
+  <div class="card z-0">
+    <img v-if="product.pictures[0]" :src="product.pictures[0]" class="card-img-top object-fit-fill h-auto p-2" alt="...">
+    <img v-else src="@/assets/images/image-not-found.jpg" class="card-img-top h-75 img-not-found" alt="...">
+    <div class="d-flex flex-column card-body">
+      <h5 class="card-title text-center text-uppercase fw-semibold m-0 pb-2 flex-fill">{{product.title}}</h5>
+      <p class="card-text text-center m-0 flex-fill">{{product.description}}</p>
+      <hr class="flex-fill">
+      <div class="d-flex align-items-center justify-content-between fw-semibold">
         <span class="card-text price">{{product.price}} €</span>
         <Button @click="onClickProductId(product.id)">Ajouter au panier</Button>
       </div>
@@ -31,9 +33,12 @@ const onClickProductId = (id) => {
 <style scoped lang="scss">
 @use '@/assets/css/mixins' as m;
 .card {
-  width: 23rem;
+  width: 21rem;
   @include m.sm {
     width: 100%;
+  }
+  .img-not-found {
+    height: 120px;
   }
   .card-body {
     .card-title {

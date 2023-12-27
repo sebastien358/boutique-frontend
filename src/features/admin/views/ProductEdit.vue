@@ -1,7 +1,7 @@
 <template>
   <div v-if="!isLoading" class="container product-edit">
-    <div class="row mt-5 mb-4">
-      <div class="col-12">
+    <div class="row d-flex justify-content-center mt-4 mb-5">
+      <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-5">
         <form @submit.prevent="onSubmit" class="bg-white rounded-2 p-3">
           <h3 class="text-decoration-underline text-center fs-4">Modifier un produit</h3>
           <div class="mb-3">
@@ -36,7 +36,7 @@
 
     <div class="d-flex flex-wrap justify-content-center mb-4 container-images">
       <div v-for="picture in editProduct.pictures" class="position-relative">
-        <img :src="picture.url" height="300" width="300" class="picture-edit">
+        <img :src="picture.url" class="picture-edit">
         <font-awesome-icon @click="deletePicture(picture.id)" icon="fa-solid fa-trash" class="text-danger icon" />
       </div>
     </div>
@@ -47,8 +47,9 @@
 import SubmitButton from "@/components/buttons/components/SubmitButton.vue";
 import {useProductAdminStore} from "@/stores/admin/productAdminStore";
 import {storeToRefs} from "pinia";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {useRoute} from "vue-router";
+import Button from "@/components/buttons/components/Button.vue";
 
 const isLoading = ref(true)
 
@@ -79,15 +80,19 @@ const deletePicture = async (id) => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/css/mixins'as m;
 .product-edit {
   overflow-y: auto;
   height: calc(100vh - 160px);
   .container-images {
     gap: 15px;
     .picture-edit {
-      width: 400px;
-      height: 350px;
+      width: 450px;
+      height: auto;
       object-fit: cover;
+      @include m.md {
+        width: 100%;
+      }
     }
     .icon {
       position: absolute;
