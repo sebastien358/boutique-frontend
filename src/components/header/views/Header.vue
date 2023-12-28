@@ -1,5 +1,5 @@
 <template>
-  <header class="ps-2 pe-2 pe-lg-3 d-flex align-items-center justify-content-between justify-content-lg-start position-fixed w-100 z-1">
+  <header class="ps-2 pe-2 pe-lg-3 d-flex align-items-center justify-content-between justify-content-lg-start position-fixed w-100 z-2">
     <a href="http://localhost:5173" class="nav-link d-flex align-items-center flex-row me-4">
       <img src="@/assets/images/logo.svg" height="27">
       <h3 class="text-white fs-5 m-0">Dyma</h3>
