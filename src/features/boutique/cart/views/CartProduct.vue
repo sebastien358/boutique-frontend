@@ -42,10 +42,14 @@ const productStore = useProductStore()
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/css/mixins' as m;
 .cart-fixed {
   position: fixed;
   right: 20px;
   bottom: 65px;
+  @include m.sm {
+    right: 10px;
+  }
 }
 
 .logo-cart {
@@ -76,6 +80,9 @@ const productStore = useProductStore()
   border: var(--border);
   padding: 8px;
   width: 450px;
+  @include m.sm {
+    width: 95.5vmin;
+  }
   .basket {
     font-size: 12px;
     position: relative;
