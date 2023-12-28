@@ -18,15 +18,17 @@
 
 <script setup lang="ts">
 import SubmitButton from "@/components/buttons/components/SubmitButton.vue";
-import {ref} from "vue";
-import {useUserStore} from "@/stores/userStore";
-import {useRouter} from "vue-router";
 import BaseTemplate from "@/BaseTemplate.vue";
+import {useUserStore} from "@/stores/userStore";
+import {ref} from "vue";
+import {useRouter} from "vue-router";
 
 const email = ref(null)
 
 const userStore = useUserStore()
+
 const router = useRouter()
+
 const onSubmit = async () => {
   await userStore.requestPassword(email.value.value)
   await router.push({name: 'boutique'})

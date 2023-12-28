@@ -22,30 +22,28 @@
 
 <script setup lang="ts">
 import SubmitButton from "@/components/buttons/components/SubmitButton.vue";
+import BaseTemplate from "@/BaseTemplate.vue";
 import {useUserStore} from "@/stores/userStore";
 import {ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {useMessageStore} from "@/stores/messageStore";
-import BaseTemplate from "@/BaseTemplate.vue";
 
 const password = ref(null)
 const confirm = ref(null)
 
-const userStore = useUserStore()
-
-const messageSTore = useMessageStore()
-
 const route = useRoute()
+
+const userStore = useUserStore()
 const router = useRouter()
 
 const onSubmit = async () => {
   if (password.value.value !== confirm.value.value) {
-    messageSTore.addMessage('Les mots de passe ne correspondent pas', 'danger')
+    console.log('pas de')
     return
   }
   await userStore.resetPassword(route.params.token, password.value.value, confirm.value.value)
   await router.push({name: 'login'})
 }
+
 </script>
 
 <style scoped lang="scss">

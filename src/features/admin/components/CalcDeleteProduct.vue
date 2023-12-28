@@ -1,6 +1,6 @@
 <template>
   <div v-if="open" class="d-flex align-items-center justify-content-center calc-delete-product z-1">
-    <div class="bg-white py-3 px-4 content">
+    <div class="bg-white py-4 px-5 content">
       <p class="text-center m-0 pb-2">Voulez-vous vraiment supprimer cet article ?</p>
       <div class="d-flex flex-row justify-content-center">
         <Button @click="emit('close')" class="bg-secondary">Annuler</Button>
