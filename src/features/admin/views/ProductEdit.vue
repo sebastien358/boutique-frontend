@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isLoading" class="container product-edit">
-    <div class="row d-flex justify-content-center mt-4 mb-5">
+    <div class="row d-flex align-items-center justify-content-center h-100">
       <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-5">
         <form @submit.prevent="onSubmit" class="bg-white rounded-2 p-3">
           <h3 class="text-decoration-underline text-center fs-4">Modifier un produit</h3>

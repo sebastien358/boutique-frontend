@@ -9,7 +9,7 @@
     <div v-else>
       <div v-if="state.open" class="d-flex flex-column cart-product">
         <h3>Panier</h3>
-        <span v-if="!cart.length" class="text-danger mb-3">Rien dans le panier...</span>
+        <span v-if="!cart.length" class="text-danger mb-3 basket">Rien dans le panier...</span>
         <CartProductList
             :cart="cart"
         />
@@ -76,6 +76,11 @@ const productStore = useProductStore()
   border: var(--border);
   padding: 8px;
   width: 450px;
+  .basket {
+    font-size: 12px;
+    position: relative;
+    left: 1px;
+  }
   h3 {
     font-size: 22px;
   }

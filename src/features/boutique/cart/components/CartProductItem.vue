@@ -3,7 +3,7 @@
     <ul class="list-inline m-0 mb-2">
       <li class="d-flex align-items-center flex-row mb-2 cart-product-item">
         <div class="d-flex align-items-center flex-row flex-fill">
-          <p class="m-0 pe-5">{{product.title}}</p>
+          <small class="m-0 pe-5">{{product.title}}</small>
           <small>{{product.price}}€</small>
         </div>
         <div class="d-flex align-items-center">

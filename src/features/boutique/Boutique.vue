@@ -1,14 +1,12 @@
 <template>
   <BaseTemplate>
-    <div class="#">
-      <div class="#">
-        <CartProduct
-            :cart="cart"
-        />
-        <ShopProduct
-            :products="products"
-        />
-      </div>
+    <div>
+      <CartProduct
+          :cart="cart"
+      />
+      <ShopProduct
+          :products="products"
+      />
     </div>
   </BaseTemplate>
 </template>

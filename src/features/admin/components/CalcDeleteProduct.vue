@@ -1,11 +1,11 @@
 <template>
   <div v-if="open" class="d-flex align-items-center justify-content-center calc-delete-product z-1">
-    <div class="bg-white p-4 content">
-      <p class="text-center">Voulez-vous vraiment supprimer cet article ?</p>
+    <div class="bg-white py-3 px-4 content">
+      <p class="text-center m-0 pb-2">Voulez-vous vraiment supprimer cet article ?</p>
       <div class="d-flex flex-row justify-content-center">
         <Button @click="emit('close')" class="bg-secondary">Annuler</Button>
         <div class="separator"></div>
-        <Button @click="emit('deleteId', id)" class="bg-danger">Ok</Button>
+        <Button @click="emit('deleteProductId', id)" class="bg-primary">Ok</Button>
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'close'): void
-  (e: 'deleteId', id: number): void
+  (e: 'deleteProductId', id: number): void
 }>()
 </script>
 
@@ -32,11 +32,12 @@ const emit = defineEmits<{
   left: 0;
   width: 100%;
   height: 100vh;
+  border: 1px solid var(--gray-3);
   background-color: rgba(0, 0, 0, 0.10);
 }
 
 .content {
-  width: 450px;
+  width: auto;
   p {
     font-size: 15px;
   }

@@ -1,7 +1,7 @@
 <template>
   <BaseTemplate>
-    <div class="container">
-      <div class="row d-flex justify-content-center mt-5">
+    <div class="container h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
         <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-6">
           <form @submit.prevent="onSubmit" class="bg-white rounded-2 p-3">
             <div class="mb-3">

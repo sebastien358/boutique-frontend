@@ -18,18 +18,14 @@
           </div>
           <div class="d-flex align-items-center flex-row">
             <router-link :to="{name: 'admin-product-edit', params: {id: product.id}}">
-              <font-awesome-icon icon="fa-solid fa-pen-to-square" class="text-muted me-1 icon"/>
+              <font-awesome-icon icon="fa-solid fa-pen-to-square" class="text-muted icon-2"/>
             </router-link>
-            <font-awesome-icon
-                @click="state.open = true"
-                icon="fa-solid fa-trash"
-                class="text-danger icon"
-            />
+            <font-awesome-icon @click="state.open = true" icon="fa-solid fa-trash" class="text-danger ms-2 icon-2" />
             <CalcDeleteProduct
+                @delete-product-id="deleteProductId"
                 @close="state.open = false"
-                @delete-id="deleteId"
-                :open="state.open"
                 :id="product.id"
+                :open="state.open"
             />
           </div>
         </li>
@@ -74,11 +70,10 @@ const reinitialisation = async () => {
   await productAdminStore.getProducts()
 }
 
-const deleteId = async (id: number) => {
+const deleteProductId = async (id: number) => {
   await productAdminStore.deleteProduct(id)
   state.open = false
 }
-
 </script>
 
 <style scoped lang="scss">
@@ -111,6 +106,10 @@ const deleteId = async (id: number) => {
   }
 }
 
+.icon-2 {
+  cursor: pointer;
+}
+
 .btn-reinitialisation {
   width: 120px;
 }
@@ -118,9 +117,4 @@ const deleteId = async (id: number) => {
 p {
   font-size: 14px;
 }
-
-
-
-
-
 </style>

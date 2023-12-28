@@ -1,7 +1,7 @@
 <template>
   <BaseTemplate>
-    <div v-if="!isLoading" class="container">
-      <div class="row d-flex justify-content-center mt-5">
+    <div v-if="!isLoading" class="container h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
         <div class="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-5">
           <form @submit.prevent="onSubmit(editRegistration)" class="bg-white rounded-2 p-3">
             <h3 class="text-decoration-underline text-center fs-4 mb-3">Inscription</h3>

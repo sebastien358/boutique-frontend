@@ -39,7 +39,7 @@ export const useProductStore = defineStore('productStore', {
                 category: ''
             }
         },
-        addProductToCart(id) {
+        addProductToCart(id: number) {
             const product = this.products.find(product => product.id === id)
             if (product) {
                 const productToCart = this.cart.find(product => product.id === id)
