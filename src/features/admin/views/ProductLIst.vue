@@ -20,7 +20,17 @@
             <router-link :to="{name: 'admin-product-edit', params: {id: product.id}}">
               <font-awesome-icon icon="fa-solid fa-pen-to-square" class="text-muted me-1 icon"/>
             </router-link>
-            <font-awesome-icon @click="deleteProduct(product.id)" icon="fa-solid fa-trash" class="text-danger icon" />
+            <font-awesome-icon
+                @click="state.open = true"
+                icon="fa-solid fa-trash"
+                class="text-danger icon"
+            />
+            <CalcDeleteProduct
+                @close="state.open = false"
+                @delete-id="deleteId"
+                :open="state.open"
+                :id="product.id"
+            />
           </div>
         </li>
       </ul>
@@ -35,9 +45,15 @@
 <script setup lang="ts">
 import {useProductAdminStore} from "@/stores/admin/productAdminStore";
 import {storeToRefs} from "pinia";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import Button from "@/components/buttons/components/Button.vue";
+import CalcDeleteProduct from "@/features/admin/components/CalcDeleteProduct.vue";
 
+const state = reactive<{
+  open: boolean
+}>({
+  open: false
+})
 const isLoading = ref(true)
 
 const productAdminStore = useProductAdminStore()
@@ -49,10 +65,6 @@ onMounted(async () => {
   isLoading.value = false
 })
 
-const deleteProduct = async (id) => {
-  await productAdminStore.deleteProduct(id)
-}
-
 const filtersProducts = async () => {
   await productAdminStore.getProducts()
 }
@@ -61,6 +73,12 @@ const reinitialisation = async () => {
   productAdminStore.initFilterProduct()
   await productAdminStore.getProducts()
 }
+
+const deleteId = async (id: number) => {
+  await productAdminStore.deleteProduct(id)
+  state.open = false
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -100,4 +118,9 @@ const reinitialisation = async () => {
 p {
   font-size: 14px;
 }
+
+
+
+
+
 </style>

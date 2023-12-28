@@ -98,7 +98,7 @@ const deletePicture = async (id) => {
       position: absolute;
       top: 13px;
       right: 10px;
-      font-size: 20px;
+      font-size: 17px;
       cursor: pointer;
     }
   }

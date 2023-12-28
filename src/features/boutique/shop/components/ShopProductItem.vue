@@ -47,6 +47,10 @@ const onClickProductId = (id) => {
     .card-text {
       font-size: 15px;
     }
+    .price {
+      font-weight: 700;
+      font-size: 12px;
+    }
   }
 }
 </style>

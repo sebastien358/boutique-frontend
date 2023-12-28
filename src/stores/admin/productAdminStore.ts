@@ -109,7 +109,7 @@ export const useProductAdminStore = defineStore('productAdminStore', {
 
             await this.getProducts()
         },
-        async deleteProduct(id) {
+        async deleteProduct(id: number) {
             const messageStore = useMessageStore()
             await axios.delete(`https://127.0.0.1:8000/admin/delete-product/${id}`, {
                 headers: {
@@ -127,7 +127,7 @@ export const useProductAdminStore = defineStore('productAdminStore', {
 
             await this.getProducts()
         },
-        async deletePicture(id) {
+        async deletePicture(id: number) {
             const messageStore = useMessageStore()
             await axios.delete(`https://127.0.0.1:8000/admin/delete-picture/${id}`, {
                 headers: {

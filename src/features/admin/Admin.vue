@@ -29,7 +29,7 @@ import {reactive} from "vue";
 const state = reactive<{
   open: boolean
 }>({
-  open: !matchMedia('(max-width: 575.98px)').matches
+  open: !matchMedia('(max-width: 575.98px)').matches,
 })
 </script>
 
