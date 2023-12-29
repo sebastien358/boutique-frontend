@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="z-3">
     <ul class="list-inline m-0 mb-2">
       <li class="d-flex align-items-center flex-row mb-2 cart-product-item">
         <div class="d-flex align-items-center flex-row flex-fill">

@@ -26,6 +26,7 @@ import BaseTemplate from "@/BaseTemplate.vue";
 import {useUserStore} from "@/stores/userStore";
 import {ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
+import {useMessageStore} from "@/stores/messageStore";
 
 const password = ref(null)
 const confirm = ref(null)
@@ -35,9 +36,11 @@ const route = useRoute()
 const userStore = useUserStore()
 const router = useRouter()
 
+const messageStore = useMessageStore()
+
 const onSubmit = async () => {
   if (password.value.value !== confirm.value.value) {
-    console.log('pas de')
+    messageStore.addMessage('Les mots de passe ne correspondent pas', 'danger')
     return
   }
   await userStore.resetPassword(route.params.token, password.value.value, confirm.value.value)

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column pt-3 pb-2 px-2 filterShop z-2">
+  <div class="d-flex flex-column pt-3 pb-2 px-2 filterShop z-1">
     <div class="d-flex align-items-center flex-row mb-4 search">
       <input v-model="productsFilters.title" type="search" class="input-search" placeholder="Rechercher">
       <font-awesome-icon @click="onClickFilterTitle" icon="fa-solid fa-magnifying-glass" class="icon" />
@@ -10,14 +10,14 @@
       <div v-for="priceRange in [[0, 500], [500, 1000], [1000, 1500], [1500, 2000], [2000, 2500], [2500, 3000], [3000, 3500]]">
         <input
             @click="onclickFilterPrice(productsFilters.price = priceRange)"
-            type="radio"
-            name="priceRange"
             :id="priceRange[0].toString()"
             :checked="priceRange[0] === productsFilters.price"
+            name="priceRange"
             class="mb-2 me-1"
+            type="radio"
         >
         <label :for="priceRange[0].toString()">
-          {{priceRange[0] === 0 ? 'Tous les produits' : priceRange[1] === 3500 ?
+          {{ priceRange[0] === 0 ? 'Tous les produits' : priceRange[1] === 3500 ?
                 'Plus de 3000' : `Entre ${priceRange[0]} et ${priceRange[1]}` }}
         </label>
       </div>
@@ -60,7 +60,7 @@ const onclickFilterPrice = async () => {
   await productStore.getProducts()
 }
 
-const onclickFilterCategory = async (category) => {
+const onclickFilterCategory = async (category: string) => {
   if (category === 'all') {
     productStore.initFiltersProducts()
     await productStore.getProducts()

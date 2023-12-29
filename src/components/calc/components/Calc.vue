@@ -1,6 +1,6 @@
 <template>
   <Teleport v-if="open" to="body">
-    <div @click="emit('close')" class="calc z-1" :class="{transparent}"></div>
+    <div @click="emit('close')" class="calc z-0" :class="{transparent}"></div>
   </Teleport>
 </template>
 
