@@ -7,17 +7,17 @@
 
     <div class="d-flex flex-column mb-4">
       <h3 class="fs-6">Filtrer par prix</h3>
-      <div v-for="priceRange in [[0, 500], [500, 1000], [1000, 1500], [1500, 2000], [2000, 2500], [2500, 3000], [3000, 3500]]">
+      <div v-for="priceRange in [[0, 10000], [500, 1000], [1000, 1500], [1500, 2000], [2000, 2500], [2500, 3000], [3000, 3500]]">
         <input
             @click="onclickFilterPrice(productsFilters.price = priceRange)"
             :id="priceRange[0].toString()"
-            :checked="priceRange[0] === productsFilters.price"
+            :checked="productsFilters.price === priceRange[0]"
             name="priceRange"
             class="mb-2 me-1"
             type="radio"
         >
         <label :for="priceRange[0].toString()">
-          {{ priceRange[0] === 0 ? 'Tous les produits' : priceRange[1] === 3500 ?
+          {{priceRange[0] === 0 ? 'Tous les produits' : priceRange[1] === 3500 ?
                 'Plus de 3000' : `Entre ${priceRange[0]} et ${priceRange[1]}` }}
         </label>
       </div>
@@ -49,8 +49,7 @@ import {useProductStore} from "@/stores/productStore";
 import {storeToRefs} from "pinia";
 
 const productStore = useProductStore()
-const { products } = storeToRefs(productStore)
-const { productsFilters } = storeToRefs(productStore)
+const { productsFilters, products } = storeToRefs(productStore)
 
 const onClickFilterTitle = async () => {
   await productStore.getProducts()
@@ -60,11 +59,7 @@ const onclickFilterPrice = async () => {
   await productStore.getProducts()
 }
 
-const onclickFilterCategory = async (category: string) => {
-  if (category === 'all') {
-    productStore.initFiltersProducts()
-    await productStore.getProducts()
-  }
+const onclickFilterCategory = async () => {
   await productStore.getProducts()
 }
 
@@ -85,41 +80,44 @@ const reinitialisation = async () => {
     position: fixed;
     height: auto;
   }
-  .search {
-    border-top: var(--border);
-    border-left: var(--border);
-    border-bottom: var(--border);
-    background-color: var(--text-primary-color);
-    border-radius: 6px 0 0 6px;
-    padding-left: 4px;
-    .input-search {
-      border: 0;
-      width: 100%;
-      outline: none;
-    }
-    .icon {
-      cursor: pointer;
-      font-size: 16px;
-      background-color: var(--gray-3);
-      color: var(--text-primary-color);
-      border-radius: 0 6px 6px 0;
-      padding: 12px;
-      width: 30px;
-      border: 2px solid var(--gray-3);
-    }
+}
+
+.search {
+  border-top: var(--border);
+  border-left: var(--border);
+  border-bottom: var(--border);
+  background-color: var(--text-primary-color);
+  border-radius: 6px 0 0 6px;
+  padding-left: 4px;
+  .input-search {
+    border: 0;
+    width: 100%;
+    outline: none;
   }
-  label {
-    font-size: 14px;
-  }
-  .category {
+  .icon {
     cursor: pointer;
-    font-size: 14px;
-    margin-bottom: 6px;
-    transition: 150ms ease;
-    &:hover {
-      color: var(--success-1);
-      text-decoration: underline;
-    }
+    font-size: 16px;
+    background-color: var(--gray-3);
+    color: var(--text-primary-color);
+    border-radius: 0 6px 6px 0;
+    padding: 12px;
+    width: 30px;
+    border: 2px solid var(--gray-3);
+  }
+}
+
+label {
+  font-size: 14px;
+}
+
+.category {
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 12px;
+  transition: 150ms ease;
+  &:hover {
+    color: var(--success-1);
+    text-decoration: underline;
   }
 }
 

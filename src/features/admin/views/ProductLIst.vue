@@ -9,10 +9,10 @@
 
     <nav class="my-3">
       <ul class="list-inline">
-        <li v-for="product in products" :key="product.id" class="d-flex align-items-center flex-row border border-1 px-3 py-2 rounded-2 bg-white mb-3">
+        <li v-for="product in products" :key="product.id" class="d-flex align-items-center flex-row border border-1 px-3 py-2 rounded-2 bg-white mb-2">
           <div class="d-flex align-items-center flex-row flex-fill">
             <img v-if="product.pictures[0]" :src="product.pictures[0]" height="45" width="55" class="object-fit-cover rounded-2 me-3">
-            <img v-else src="@/assets/images/image-not-found.jpg" height="60" width="90" class="object-fit-cover rounded-2 me-2">
+            <img v-else src="@/assets/images/image-not-found.jpg" height="45" width="55" class="object-fit-cover rounded-2 me-3">
             <h3 class="m-0 fs-6 pe-5">{{product.title}}</h3>
             <p class="m-0">{{product.price}} €</p>
           </div>

@@ -30,8 +30,12 @@ const userStore = useUserStore()
 const router = useRouter()
 
 const onSubmit = async () => {
-  await userStore.requestPassword(email.value.value)
-  await router.push({name: 'boutique'})
+  try {
+    await userStore.requestPassword(email.value.value)
+    await router.push({name: 'boutique'})
+  } catch(e) {
+    await router.push({name: 'request-password'})
+  }
 }
 </script>
 

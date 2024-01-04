@@ -9,7 +9,7 @@ export const useProductStore = defineStore('productStore', {
             productsFilters: {
                 title: '',
                 price: 0,
-                category: ''
+                category: 'all'
             }
         }
     },
@@ -24,7 +24,7 @@ export const useProductStore = defineStore('productStore', {
                 filters.push(`price=${this.productsFilters.price}`)
             }
 
-            if (this.productsFilters.category !== '') {
+            if (this.productsFilters.category !== 'all') {
                 filters.push(`category=${this.productsFilters.category}`)
             }
 
@@ -36,7 +36,7 @@ export const useProductStore = defineStore('productStore', {
             this.productsFilters = {
                 title: '',
                 price: 0,
-                category: ''
+                category: 'all'
             }
         },
         addProductToCart(id: number) {

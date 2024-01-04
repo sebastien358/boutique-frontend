@@ -15,20 +15,14 @@ import {storeToRefs} from "pinia";
 const messageStore = useMessageStore()
 const { message, type } = storeToRefs(messageStore)
 
-const displayMessage = (alert) => {
-  if (alert) {
-    const timeout = setTimeout(() => {
-      messageStore.initMessage()
-      clearTimeout(timeout)
-    }, 2000)
-  }
-}
-
-displayMessage(message)
+message ? setTimeout(() => {
+  messageStore.initMessage()
+}, 2000) : null
 </script>
 
 <style scoped lang="scss">
 .alert {
+  font-size: 13px;
   text-align: center;
   border-radius: 0;
   margin: 0;

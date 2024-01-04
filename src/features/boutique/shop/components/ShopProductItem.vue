@@ -1,7 +1,7 @@
 <template>
   <div class="card z-0">
     <img v-if="product.pictures[0]" :src="product.pictures[0]" class="card-img-top object-fit-fill h-auto p-2" alt="...">
-    <img v-else src="@/assets/images/image-not-found.jpg" class="card-img-top h-75 img-not-found" alt="...">
+    <img v-else src="@/assets/images/image-not-found.jpg" class="card-img-top object-fit-cover img-not-found" alt="...">
     <div class="card-body d-flex flex-column">
       <h5 class="card-title text-center text-uppercase fw-semibold m-0 pb-2 flex-fill">{{product.title}}</h5>
       <p class="card-text text-center m-0 flex-fill">{{product.description}}</p>
@@ -25,7 +25,7 @@ defineProps<{
 
 const productStore = useProductStore()
 
-const onClickProductId = (id) => {
+const onClickProductId = (id: number) => {
   productStore.addProductToCart(id)
 }
 </script>
@@ -33,12 +33,12 @@ const onClickProductId = (id) => {
 <style scoped lang="scss">
 @use '@/assets/css/mixins' as m;
 .card {
-  width: 21rem;
+  width: 22rem;
   @include m.sm {
     width: 100%;
   }
   .img-not-found {
-    height: 120px;
+    height: 220px;
   }
   .card-body {
     .card-title {
