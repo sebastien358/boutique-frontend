@@ -7,7 +7,7 @@
 
     <div class="d-flex flex-column mb-4">
       <h3 class="fs-6">Filtrer par prix</h3>
-      <div v-for="priceRange in [[0, 10000], [500, 1000], [1000, 1500], [1500, 2000], [2000, 2500], [2500, 3000], [3000, 3500]]">
+      <div v-for="priceRange in [[0], [500], [1000], [1500], [2000], [2500], [3000], [3500]]">
         <input
             @click="onclickFilterPrice(productsFilters.price = priceRange)"
             :id="priceRange[0].toString()"
@@ -17,8 +17,7 @@
             type="radio"
         >
         <label :for="priceRange[0].toString()">
-          {{priceRange[0] === 0 ? 'Tous les produits' : priceRange[1] === 3500 ?
-                'Plus de 3000' : `Entre ${priceRange[0]} et ${priceRange[1]}` }}
+          {{'plus de ' + priceRange.toString() + '€'}}
         </label>
       </div>
     </div>

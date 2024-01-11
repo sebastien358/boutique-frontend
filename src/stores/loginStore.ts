@@ -19,19 +19,18 @@ export const useLoginStore = defineStore('loginStore',{
         async login() {
             const messageStore = useMessageStore()
             const userAdminStore= useUserAdminStore()
-            await axios.post('https://127.0.0.1:8000/api/login_check', {
-                username: this.editLogin.email,
-                password: this.editLogin.password
-            })
-            .then(response => {
+
+            try {
+                const response = await axios.post('https://127.0.0.1:8000/api/login_check', {
+                    username: this.editLogin.email,
+                    password: this.editLogin.password
+                })
                 sessionStorage.setItem('token', response.data.token)
                 messageStore.addMessage('Vous êtes connecté', 'success')
                 userAdminStore.getMe()
-            })
-            .catch(error => {
+            } catch(e) {
                 messageStore.addMessage('Identifiant ou mot de passe invalide', 'danger')
-                console.error(error)
-            })
+            }
         }
     }
 })
