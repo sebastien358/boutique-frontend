@@ -2,6 +2,8 @@ import {defineStore} from "pinia";
 import axios from "axios";
 import {useMessageStore} from "@/stores/messageStore";
 
+const BASE_URL: string = 'https://127.0.0.1:8000'
+
 export const useProductAdminStore = defineStore('productAdminStore', {
     state: () => {
         return {
@@ -18,7 +20,7 @@ export const useProductAdminStore = defineStore('productAdminStore', {
             if (this.productFilter.title !== '') {
                 filters.push(`title=${this.productFilter.title}`)
             }
-            this.products = await axios.get(`https://127.0.0.1:8000/admin/products${filters.length ? '?' + filters.join('&') : ''}`, {
+            this.products = await axios.get(`${BASE_URL}/admin/products${filters.length ? '?' + filters.join('&') : ''}`, {
                 headers: {
                     Authorization: 'Bearer ' + sessionStorage.getItem('token')
                 }
@@ -31,8 +33,8 @@ export const useProductAdminStore = defineStore('productAdminStore', {
                 title: ''
             }
         },
-        async getProductItem(id) {
-            this.editProduct = await axios.get(`https://127.0.0.1:8000/admin/product/${id}`, {
+        async getProductItem(id: string) {
+            this.editProduct = await axios.get(`${BASE_URL}/admin/product/${id}`, {
                 headers: {
                     Authorization: 'Bearer ' + sessionStorage.getItem('token')
                 }
@@ -61,7 +63,7 @@ export const useProductAdminStore = defineStore('productAdminStore', {
             for (let i = 0; i < pictures.length; i++) {
                 formData.append(`pictures_${i}`, pictures[i])
             }
-            await axios.post('https://127.0.0.1:8000/admin/new-product', formData, {
+            await axios.post(`${BASE_URL}/admin/new-product`, formData, {
                 'Content-type': 'multipart/form-data',
                 headers: {
                     Authorization: 'Bearer ' + sessionStorage.getItem('token')
@@ -91,57 +93,53 @@ export const useProductAdminStore = defineStore('productAdminStore', {
             for (let i = 0; i < pictures.length; i++) {
                 formData.append(`pictures_${i}`, pictures[i])
             }
-            await axios.post(`https://127.0.0.1:8000/admin/edit-product/${this.editProduct.id}`, formData, {
-                'Content-type': 'multipart/form-data',
-                headers: {
-                    Authorization: 'Bearer ' + sessionStorage.getItem('token')
-                }
-            })
-            .then(response => {
+
+            try {
+                const response = await axios.post(`${BASE_URL}/admin/edit-product/${this.editProduct.id}`, formData, {
+                    'Content-type': 'multipart/form-data',
+                    headers: {
+                        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+                    }
+                })
                 this.editProduct.pictures = response.data.pictures
                 messageStore.addMessage('L\'article a bien été modifié', 'success')
-                response.data
-            })
-            .catch(error => {
+            } catch(e) {
                 messageStore.addMessage('L\'article n\'a pas pu être modifié', 'danger')
-                console.log(error)
-            })
+                console.error(e)
+            }
 
             await this.getProducts()
         },
         async deleteProduct(id: number) {
             const messageStore = useMessageStore()
-            await axios.delete(`https://127.0.0.1:8000/admin/delete-product/${id}`, {
-                headers: {
-                    Authorization: 'Bearer ' + sessionStorage.getItem('token')
-                }
-            })
-            .then(response => {
+            try {
+                await axios.delete(`${BASE_URL}/admin/delete-product/${id}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+                    }
+                })
                 messageStore.addMessage('L\'article a bien été supprimé', 'success')
-                console.log(response.data)
-            })
-            .catch(error => {
+            } catch(e) {
                 messageStore.addMessage('L\'article n\'a pas pu être supprimé', 'danger')
-                console.log(error)
-            })
+                console.error(e)
+            }
 
             await this.getProducts()
         },
         async deletePicture(id: number) {
             const messageStore = useMessageStore()
-            await axios.delete(`https://127.0.0.1:8000/admin/delete-picture/${id}`, {
-                headers: {
-                    Authorization: 'Bearer ' + sessionStorage.getItem('token')
-                }
-            })
-            .then(response => {
+            try {
+                await axios.delete(`${BASE_URL}/admin/delete-picture/${id}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+                    }
+                })
                 this.editProduct.pictures = this.editProduct.pictures.filter(picture => picture.id !== id)
                 messageStore.addMessage('L\'image a bien été supprimée', 'success')
-            })
-            .catch(error => {
+            } catch(e) {
                 messageStore.addMessage('L\'image n\'a pas pu être supprimée', 'danger')
-                console.log(error)
-            })
+                console.error(e)
+            }
 
             await this.getProducts()
         }

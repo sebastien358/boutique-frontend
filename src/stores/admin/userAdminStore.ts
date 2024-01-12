@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 
-const BASE_URL = 'https://127.0.0.1:8000'
+const BASE_URL: string = 'https://127.0.0.1:8000'
 
 export const useUserAdminStore = defineStore('userAdminStore',{
     state: () => {

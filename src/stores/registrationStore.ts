@@ -2,6 +2,8 @@ import {defineStore} from "pinia";
 import axios from "axios";
 import {useMessageStore} from "@/stores/messageStore";
 
+const BASE_URL: string = 'https://127.0.0.1:8000'
+
 export const useRegistrationStore = defineStore('registrationStore', {
     state: () => {
         return {
@@ -29,7 +31,7 @@ export const useRegistrationStore = defineStore('registrationStore', {
             formData.append('password[second]', this.editRegistration.confirm)
 
             try {
-                await axios.post('https://127.0.0.1:8000/registration', formData)
+                await axios.post(`${BASE_URL}/registration`, formData)
                 messageStore.addMessage('Un email de confirmation d\'inscription vous a été envoyé', 'success')
             } catch(e) {
                 messageStore.addMessage('Un compte existe déjà avec cet email', 'danger')
