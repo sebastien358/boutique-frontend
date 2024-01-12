@@ -8,7 +8,7 @@
               <label for="email" class="form-label">Entrer votre email</label>
               <input ref="email" type="email" class="form-control" aria-describedby="emailHelp" autofocus>
             </div>
-            <SubmitButton>Réinitialisation de mot de passe</SubmitButton>
+            <SubmitButton :buttonReinitialisationPassword="true">Réinitialisation de mot de passe</SubmitButton>
           </form>
         </div>
       </div>

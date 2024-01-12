@@ -25,7 +25,7 @@
               <label for="confirm" class="form-label">Confirmation</label>
               <input v-model="editRegistration.confirm" type="password" class="form-control">
             </div>
-            <SubmitButton>S'inscrire</SubmitButton>
+            <SubmitButton :buttonRegistration="true">S'inscrire</SubmitButton>
           </form>
         </div>
       </div>

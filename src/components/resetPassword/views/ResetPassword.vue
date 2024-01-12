@@ -12,7 +12,7 @@
               <label for="password" class="form-label">Confirmation</label>
               <input ref="confirm" type="password" class="form-control">
             </div>
-            <SubmitButton>Modifier mot de passe</SubmitButton>
+            <SubmitButton :buttonReinitialisationPassword="true">Modifier mot de passe</SubmitButton>
           </form>
         </div>
       </div>

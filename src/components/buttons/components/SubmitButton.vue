@@ -1,6 +1,9 @@
 <template>
   <button type="submit" class="button" :class="{
-    buttonPrimaryForm
+    buttonReinitialisationPassword,
+    buttonPrimaryForm,
+    buttonRegistration,
+    buttonLogin
   }"
   >
     <slot>Envoyer</slot>
@@ -9,7 +12,10 @@
 
 <script setup lang="ts">
 defineProps<{
+  buttonReinitialisationPassword?: boolean
   buttonPrimaryForm?: boolean
+  buttonRegistration?: boolean
+  buttonLogin?: boolean
 }>()
 </script>
 
@@ -25,6 +31,30 @@ defineProps<{
 
 .buttonPrimaryForm {
   background-color: var(--primary-1);
+  &:hover {
+    background-color: var(--primary-2);
+  }
+}
+
+.buttonLogin {
+  background-color: var(--primary-1);
+  padding: 6px 10px;
+  &:hover {
+    background-color: var(--primary-2);
+  }
+}
+
+.buttonRegistration {
+  background-color: var(--primary-1);
+  padding: 6px 10px;
+  &:hover {
+    background-color: var(--primary-2);
+  }
+}
+
+.buttonReinitialisationPassword {
+  background-color: var(--primary-1);
+  padding: 6px 10px;
   &:hover {
     background-color: var(--primary-2);
   }

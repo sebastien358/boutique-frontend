@@ -14,7 +14,7 @@
               <input v-model="editLogin.password" type="password" class="form-control">
             </div>
             <div class="d-flex justify-content-between">
-              <SubmitButton>Se connecter</SubmitButton>
+              <SubmitButton :buttonLogin="true">Se connecter</SubmitButton>
               <router-link :to="{name: 'request-password'}" class="router-link">Mot de passe oublié?</router-link>
             </div>
           </form>
