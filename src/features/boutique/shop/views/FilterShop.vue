@@ -38,7 +38,7 @@
       <small class="mb-1 ms-1">Nombre de produits:
         <small class="text-success">{{products.length}}</small>
       </small>
-      <Button @click="reinitialisation" class="bg-danger">Réinitialisation</Button>
+      <Button @click="reinitialisation" :buttonReinitialisation="true">Réinitialisation</Button>
     </div>
   </div>
 </template>

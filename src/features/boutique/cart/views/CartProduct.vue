@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-column cart-fixed z-2">
-  <CartBasketItem
-      :cart="cart"
-  />
+    <CartBasketItem
+        :cart="cart"
+    />
   </div>
 </template>
 

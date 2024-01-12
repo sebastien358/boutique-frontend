@@ -9,7 +9,7 @@
       <hr class="flex-fill">
       <div class="d-flex justify-content-center">
         <router-link :to="{name: 'product-details', params: {id: product.id}}">
-          <Button :buttonDetails="true">Détails</Button>
+          <Button :buttonPrimary="true">Détails</Button>
         </router-link>
       </div>
     </div>
@@ -47,11 +47,5 @@ defineProps<{
       font-size: 12px;
     }
   }
-}
-
-.active {
-  //width: 30rem;
-  //height: 30rem
-  transform: scale(2);
 }
 </style>

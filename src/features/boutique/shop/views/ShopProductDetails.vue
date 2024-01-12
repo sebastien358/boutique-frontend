@@ -3,9 +3,12 @@
     <div v-if="!isLoading" class="container pt-3">
       <div class="row">
         <div class="d-flex justify-content-center" :class="{active: state.toggleImageStyle}">
-          <img @click="state.toggleImageStyle = !state.toggleImageStyle" v-if="editProduct.pictures[0]" :src="editProduct.pictures[0].url" class="img" :class="{
-          active: state.toggleImageStyle
-        }">
+          <div @click="state.toggleImageStyle = !state.toggleImageStyle">
+            <img v-if="editProduct.pictures[0]" :src="editProduct.pictures[0].url" class="img" :class="{
+            active: state.toggleImageStyle
+          }">
+            <img v-else src="@/assets/images/image-not-found.jpg">
+          </div>
         </div>
 
         <div :class="{bodyPage: state.toggleImageStyle}">
@@ -17,7 +20,7 @@
             </div>
           </div>
           <div class="d-flex justify-content-center mt-3">
-            <Button>Ajouter au panier</Button>
+            <Button :buttonAddBasket="true">Ajouter au panier</Button>
           </div>
         </div>
       </div>
@@ -32,9 +35,8 @@ import {useProductStore} from "@/stores/productStore";
 import {storeToRefs} from "pinia";
 import {onMounted, reactive, ref} from "vue";
 import {useRoute} from "vue-router";
-import Button from "@/components/buttons/components/Button.vue";
-import CartBasketItem from "@/features/boutique/cart/components/CartBasketItem.vue";
 import {ProductToCartInterface} from "@/interfaces";
+import Button from "@/components/buttons/components/Button.vue";
 
 const state = reactive<{
   toggleImageStyle: boolean
@@ -66,21 +68,18 @@ onMounted(async () => {
 
 .active {
   display: block;
-  margin: 100px auto;
+  margin: 150px auto;
   animation: animateImages 600ms ease-out forwards;
-  //position: relative;
 }
 
 @keyframes animateImages {
   0% {
     opacity: 0;
     transform: scale(0);
-    //transition: all 300ms ease;
   }
   100% {
     opacity: 1;
-    transform: scale(1.5);
-    //transition: all 200ms ease;
+    transform: scale(1.6);
   }
 }
 

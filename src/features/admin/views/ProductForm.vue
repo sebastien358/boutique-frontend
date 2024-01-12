@@ -29,7 +29,7 @@
             <label for="image" class="form-label me-1">Images</label>
             <input @change="changeInputFiles" type="file" ref="inputFiles" multiple>
           </div>
-          <SubmitButton>Envoyer</SubmitButton>
+          <SubmitButton :buttonPrimaryForm="true">Envoyer</SubmitButton>
         </form>
       </div>
     </div>

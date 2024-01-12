@@ -1,15 +1,15 @@
 <template>
   <div v-if="!isLoading" class="container">
     <div class="d-flex align-items-center justify-content-center">
-      <div class="d-flex align-items-center flex-row mt-3 search">
+      <div class="d-flex align-items-center flex-row mt-4 search">
         <input v-model="productFilter.title" type="search" class="input-search" placeholder="Rechercher">
         <font-awesome-icon @click="filtersProducts" icon="fa-solid fa-magnifying-glass" class="icon" />
       </div>
     </div>
 
-    <nav class="my-3">
+    <nav class="mt-5 mb-3">
       <ul class="list-inline">
-        <li v-for="product in products" :key="product.id" class="d-flex align-items-center flex-row border border-1 px-3 py-2 rounded-2 bg-white mb-2">
+        <li v-for="product in products" :key="product.id" class="d-flex align-items-center flex-row border border-1 px-3 py-3 rounded-2 bg-white mb-2">
           <div class="d-flex align-items-center flex-row flex-fill">
             <img v-if="product.pictures[0]" :src="product.pictures[0]" height="45" width="55" class="object-fit-cover rounded-2 me-3">
             <img v-else src="@/assets/images/image-not-found.jpg" height="45" width="55" class="object-fit-cover rounded-2 me-3">
@@ -33,7 +33,7 @@
     </nav>
 
     <div class="d-flex align-items-center flex-column justify-content-center mb-3">
-      <Button @click="reinitialisation" class="bg-danger btn-reinitialisation">Réinitialisation</Button>
+      <Button @click="reinitialisation" :buttonReinitialisation2="true">Réinitialisation</Button>
     </div>
   </div>
 </template>
@@ -108,10 +108,6 @@ const deleteProductId = async (id: number) => {
 
 .icon-2 {
   cursor: pointer;
-}
-
-.btn-reinitialisation {
-  width: 120px;
 }
 
 p {

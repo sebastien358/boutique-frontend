@@ -12,7 +12,7 @@
         <CartProductList
             :cart="cart"
         />
-        <Button class="btn">Commander ({{ productStore.totalPrice() }}) €</Button>
+        <Button :buttonBasket="true">Commander ({{ productStore.totalPrice() }}) €</Button>
       </div>
     </div>
   </Transition>
@@ -41,7 +41,6 @@ const productStore = useProductStore()
 
 <style scoped lang="scss">
 @use '@/assets/css/mixins' as m;
-
 
 .logo-cart {
   cursor: pointer;
@@ -81,9 +80,6 @@ const productStore = useProductStore()
   }
   h3 {
     font-size: 22px;
-  }
-  .btn {
-    background-color: var(--success-1);
   }
   span {
     font-weight: 500;

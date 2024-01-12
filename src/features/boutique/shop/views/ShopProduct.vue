@@ -8,7 +8,7 @@
     </Transition>
     <div class="w-100 mx-3 shop-product">
       <div class="d-flex flex-column justify-content-center mt-2 d-block d-md-none">
-        <Button @click="state.open = !state.open">Filtrer les Produits</Button>
+        <Button @click="state.open = !state.open" :buttonPrimaryMenu="true">Filtrer les Produits</Button>
       </div>
       <div class="my-3">
         <ShopProductList
