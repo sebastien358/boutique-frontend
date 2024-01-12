@@ -10,7 +10,6 @@
       <div v-for="priceRange in [[0], [500], [1000], [1500], [2000], [2500], [3000], [3500]]">
         <input
             @click="onclickFilterPrice(productsFilters.price = priceRange)"
-            :id="priceRange[0].toString()"
             :checked="productsFilters.price === priceRange[0]"
             name="priceRange"
             class="mb-2 me-1"
@@ -27,7 +26,9 @@
       <div
           v-for="category in ['all', 'streaming', 'gamer', 'desktop']"
           @click="onclickFilterCategory(productsFilters.category = category)"
-          class="category" :class="{active: productsFilters.category === category}"
+          class="category" :class="{
+            active: productsFilters.category === category
+          }"
       >
         {{category}}
       </div>

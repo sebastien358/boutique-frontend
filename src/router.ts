@@ -9,12 +9,14 @@ import ResetPassword from "@/components/resetPassword/views/ResetPassword.vue";
 import {ADMIN_ROUTES} from "@/features/admin/admin.routes";
 import ProductForm from "@/features/admin/views/ProductForm.vue";
 import ProductLIst from "@/features/admin/views/ProductLIst.vue";
+import ShopProductDetails from "@/features/boutique/shop/views/ShopProductDetails.vue";
 
 export const router = createRouter({
     history: createWebHistory(),
     routes: [
         {path: '/', redirect: '/boutique'},
         {name: 'boutique', path: '/boutique', component: Boutique},
+        {name: 'product-details', path: '/product-details/:id', component: ShopProductDetails},
         {name: 'login', path: '/login', component: Login},
         {name: 'registration', path: '/registration', component: Registration},
         {name: 'request-password', path: '/request-password', component: RequestPassword},

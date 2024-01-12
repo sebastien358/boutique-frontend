@@ -21,11 +21,12 @@ import {
     faTrash,
     faPenToSquare,
     faMagnifyingGlass,
-    faMessage
+    faMessage,
+    faXmark
 } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faUserSecret, faBars, faTrash, faPenToSquare, faMagnifyingGlass, faMessage)
+library.add(faUserSecret, faBars, faTrash, faPenToSquare, faMagnifyingGlass, faMessage, faXmark)
 
 const pinia = createPinia()
 const app = createApp(App)

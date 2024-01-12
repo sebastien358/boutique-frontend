@@ -27,7 +27,7 @@ export const useLoginStore = defineStore('loginStore',{
                 })
                 sessionStorage.setItem('token', response.data.token)
                 messageStore.addMessage('Vous êtes connecté', 'success')
-                userAdminStore.getMe()
+                await userAdminStore.getMe()
             } catch(e) {
                 messageStore.addMessage('Identifiant ou mot de passe invalide', 'danger')
             }

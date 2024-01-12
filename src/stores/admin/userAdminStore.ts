@@ -1,21 +1,27 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 
+const BASE_URL = 'https://127.0.0.1:8000'
+
 export const useUserAdminStore = defineStore('userAdminStore',{
     state: () => {
-        return {}
+        return {
+            user: []
+        }
     },
     actions: {
-        getMe() {
-            axios.get('https://127.0.0.1:8000/admin/me', {
-                headers: {
-                    Authorization: "Bearer " + sessionStorage.getItem('token')
-                }
-            })
-            .then(response => {
-                response.data
-            })
-            .catch(error => console.error(error))
+        async getMe() {
+            try {
+                const response = await axios.get(`${BASE_URL}/admin/me`, {
+                    headers: {
+                        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+                    }
+                })
+                this.user = response.data
+                console.log(this.user)
+            } catch (e) {
+                console.log(e)
+            }
         },
         isLogged() {
             return sessionStorage.getItem('token') !== null

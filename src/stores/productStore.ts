@@ -1,11 +1,14 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 
+const BASE_URL = 'https://127.0.0.1:8000'
+
 export const useProductStore = defineStore('productStore', {
     state: () => {
         return {
             products: [],
             cart: [],
+            editProduct: null,
             productsFilters: {
                 title: '',
                 price: 0,
@@ -28,9 +31,17 @@ export const useProductStore = defineStore('productStore', {
                 filters.push(`category=${this.productsFilters.category}`)
             }
 
-            this.products = await axios.get(`https://127.0.0.1:8000/products${filters.length ? '?' + filters.join('&') : ''}`)
+            this.products = await axios.get(`${BASE_URL}/products${filters.length ? '?' + filters.join('&') : ''}`)
                 .then(response => response.data)
                 .catch(error => console.log(error))
+        },
+        async getProductItem(id: number) {
+            try {
+                const response = await axios.get(`${BASE_URL}/product/${id}`)
+                this.editProduct = response.data
+            } catch(e) {
+                console.log(e)
+            }
         },
         initFiltersProducts() {
             this.productsFilters = {

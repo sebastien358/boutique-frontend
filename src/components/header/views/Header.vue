@@ -73,6 +73,7 @@ import {useUserAdminStore} from "@/stores/admin/userAdminStore";
 import {useRouter} from "vue-router";
 import Calc from "@/components/calc/components/Calc.vue";
 import {reactive} from "vue";
+import {storeToRefs} from "pinia";
 
 const state = reactive<{
   open: boolean
@@ -81,6 +82,7 @@ const state = reactive<{
 })
 
 const userAdminStore = useUserAdminStore()
+const { user } = storeToRefs(userAdminStore)
 
 const router = useRouter()
 
