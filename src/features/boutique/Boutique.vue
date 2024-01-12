@@ -19,8 +19,7 @@ import CartProduct from "@/features/boutique/cart/views/CartProduct.vue";
 import ShopProduct from "@/features/boutique/shop/views/ShopProduct.vue";
 
 const productStore = useProductStore()
-const { products } = storeToRefs(productStore)
-const { cart } = storeToRefs(productStore)
+const { products, cart } = storeToRefs(productStore)
 </script>
 
 <style scoped lang="scss">

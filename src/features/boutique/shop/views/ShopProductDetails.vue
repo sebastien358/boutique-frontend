@@ -4,9 +4,9 @@
       <div class="row">
         <div class="d-flex justify-content-center" :class="{active: state.toggleImageStyle}">
           <div @click="state.toggleImageStyle = !state.toggleImageStyle">
-            <img v-if="editProduct.pictures[0]" :src="editProduct.pictures[0].url" class="img" :class="{
-            active: state.toggleImageStyle
-          }">
+            <img v-if="editProduct.pictures[0]" :src="editProduct.pictures[0].url" title="Cliquer pour agrandir" class="img" :class="{
+              active: state.toggleImageStyle
+            }">
             <img v-else src="@/assets/images/image-not-found.jpg">
           </div>
         </div>
@@ -20,11 +20,15 @@
             </div>
           </div>
           <div class="d-flex justify-content-center mt-3">
-            <Button :buttonAddBasket="true">Ajouter au panier</Button>
+            <Button @click="onClickAddProductToCart(editProduct.id)" :buttonAddBasket="true">Ajouter au panier</Button>
           </div>
         </div>
       </div>
-
+    </div>
+    <div class="d-flex flex-column cart-fixed z-2">
+      <CartBasketItem
+          :cart="cart"
+      />
     </div>
   </BaseTemplate>
 </template>
@@ -37,6 +41,7 @@ import {onMounted, reactive, ref} from "vue";
 import {useRoute} from "vue-router";
 import {ProductToCartInterface} from "@/interfaces";
 import Button from "@/components/buttons/components/Button.vue";
+import CartBasketItem from "@/features/boutique/cart/components/CartBasketItem.vue";
 
 const state = reactive<{
   toggleImageStyle: boolean
@@ -51,7 +56,7 @@ defineProps<{
 const isLoading = ref(true)
 
 const productStore = useProductStore()
-const { editProduct } = storeToRefs(productStore)
+const { editProduct, cart } = storeToRefs(productStore)
 
 const route = useRoute()
 
@@ -59,10 +64,17 @@ onMounted(async () => {
   await productStore.getProductItem(route.params.id)
   isLoading.value = false
 })
+
+const onClickAddProductToCart = (id: number) => {
+  productStore.addProductToCart(id)
+}
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/css/mixins' as m;
+
 .img {
+  cursor: pointer;
   height: 220px;
 }
 
@@ -85,5 +97,14 @@ onMounted(async () => {
 
 .bodyPage {
   display: none;
+}
+
+.cart-fixed {
+  position: fixed;
+  right: 20px;
+  bottom: 65px;
+  @include m.sm {
+    right: 10px;
+  }
 }
 </style>
