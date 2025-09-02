@@ -14,12 +14,10 @@
 
 <script setup lang="ts">
 import ShopProduct from '@/features/boutique/components/shop/ShopProduct.vue'
-import { useProductStore } from '../../stores/productStore';
-
-const productStore = useProductStore();
+import type { ProductInterface } from '@/shared/services/interfaces';
 
 defineProps<{
-  products: Array
+  products: ProductInterface[]
   isLoading: boolean
 }>()
 </script>

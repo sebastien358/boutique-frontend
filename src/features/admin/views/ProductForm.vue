@@ -44,7 +44,7 @@
     <div v-for="(picture, index) in product.pictures" :key="index" class="container-images">
       <div class="d-flex flex-column align-items-center">
          <img :src="picture.filename" alt="Image du produit" class="img"/>
-        <button class="btn btn-danger" @click="deleteImage(product.id, picture.id)">Supprimer</button>
+        <button @click="onClickDeletePicture(product.id, picture.id)" class="btn btn-danger">Supprimer</button>
       </div>
     </div>
   </div>
@@ -59,6 +59,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { useAdminCategoryStore } from '../stores/categoryAdminStore';
 import { axiosAdmingetCategories } from '@/shared/services/category.service';
+import type { ProductFormInterface } from '@/shared/services/interfaces';
 
 // je récupères les données des différentes catégories dans le select html pour la séléction.
 
@@ -77,18 +78,20 @@ const route = useRoute();
 
 const product = ref('');
 
-if (route.params.id) {
+ if (route.params.id) {
   product.value = await productAdminStore.getProductId(route.params.id);
 }
 
 // function de suppression d'une image
 
-async function deleteImage(productId: string, pictureId: string, index?: number) {
-  await productAdminStore.deleteImage(productId, pictureId);
-  product.value.pictures.splice(index, 1);
+async function onClickDeletePicture(productId: number, pictureId: number, index?: number) {
+  try {
+    await productAdminStore.deletePicture(productId, pictureId);
+    product.value.pictures.splice(index, 1);
+  } catch(e) {
+    console.error(e);
+  }
 }
-
-console.log(product.value)
 
 // récupération des donneés d'un produit dans le formulaire pour la modification 
 
@@ -146,6 +149,8 @@ function onChangeImage(files: FileList) {
   images.value = [ ...images.value, ...files ];
 }
 
+// Validation du formulaire
+
 const onSubmit = handleSubmit(async (dataProduct, {resetForm}) => {
   try {
     console.log(dataProduct)
@@ -169,7 +174,7 @@ const onSubmit = handleSubmit(async (dataProduct, {resetForm}) => {
 const successMessage = ref('');
 const errorMessage = ref('');
 
-function setSuccessMessage(message, resetForm: () => void) {
+function setSuccessMessage(message: string, resetForm: () => void) {
   errorMessage.value = '';
   successMessage.value = message;
   setTimeout(() => {
@@ -179,7 +184,7 @@ function setSuccessMessage(message, resetForm: () => void) {
   }, 2000)
 }
 
-function setErrorMessage(message) {
+function setErrorMessage(message: string) {
   errorMessage.value = message;
   setTimeout(() => {
     errorMessage.value = '';
@@ -212,13 +217,5 @@ function setErrorMessage(message) {
 
 .card {
   padding: 20px 20px 10px 20px;
-}
-
-.success-message {
-  color: green;
-}
-
-.error-message {
-  color: red;
 }
 </style>

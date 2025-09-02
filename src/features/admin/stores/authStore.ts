@@ -1,14 +1,20 @@
 import { defineStore } from 'pinia'
 import { authMiddleware, axiosEmailExists, axiosLogin, axiosRegister } from '@/shared/services/auth.service'
+import type { LoginInterface, RegisterInterface } from '@/shared/services/interfaces'
 const TOKEN_KEY = 'token'
 
+interface StateAuthentification {
+  token: string,
+  isLoggedIn: boolean
+}
+
 export const useAuthStore = defineStore('auth', {
-  state: () => ({
+  state: (): StateAuthentification => ({
     token: localStorage.getItem(TOKEN_KEY),
     isLoggedIn: !!localStorage.getItem(TOKEN_KEY),
   }),
   actions: {
-    async login(dataLogin) {
+    async login(dataLogin: LoginInterface) {
       try {
         const response = await axiosLogin(dataLogin)
         if (response && response.token) {
@@ -23,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
         console.log('Erreur connexion', e)
       }
     },
-    async register(dataRegister) {
+    async register(dataRegister: RegisterInterface) {
       try {
         const response = await axiosRegister(dataRegister)
         return response;
@@ -31,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
         console.error(e);
       }
     },
-   async emailExists(dataLogin) {
+   async emailExists(dataLogin: string) {
       try {
         const result = await axiosEmailExists(dataLogin);
         return result;

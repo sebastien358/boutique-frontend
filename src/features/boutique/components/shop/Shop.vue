@@ -3,9 +3,10 @@ import ShopProductList from '@/features/boutique/components/shop/ShopProductList
 import ShopFilters from '@/features/boutique/components/shop/ShopFilters.vue'
 import Calc from '../../../../components/Calc.vue'
 import { reactive } from 'vue';
+import type { ProductInterface } from '@/shared/services/interfaces';
 
 defineProps<{
-  products: Array
+  products: ProductInterface[]
   isLoading: boolean
 }>()
 

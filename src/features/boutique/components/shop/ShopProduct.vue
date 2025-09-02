@@ -20,8 +20,10 @@
 </template>
 
 <script setup lang="ts">
+import type { ProductInterface } from '@/shared/services/interfaces';
+
 const props = defineProps<{
-  product: any
+  product: ProductInterface
 }>()
 </script>
 

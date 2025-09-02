@@ -23,7 +23,7 @@
       </ul>
       <ul v-else class="hide-xs">
         <li>
-          <a @click="authStore.logout()" hre="#">Déconnexion</a>
+          <a @click="authStore.logout()" hre="#" class="logout">Déconnexion</a>
         </li>
       </ul>
       <div class="menu-xs-container">
@@ -41,12 +41,12 @@
                 <router-link to="/register">Inscription</router-link>
               </li>
               <li>
-                <router-link to="/login">Connexion</router-link>
+                <router-link to="/login" class="login">Connexion</router-link>
               </li>
             </div>
             <div v-else>
               <li>
-                <a @click="authStore.logout()" hre="#">Déconnexion</a>
+                <a @click="authStore.logout()" href="#" class="logout">Déconnexion</a>
               </li>
             </div>
           </ul>
@@ -94,20 +94,17 @@ header {
       display: none;
     }
   }
-
   .actions-container {
     @include mixins.lg-mobile {
       justify-content: end;
     }
   }
-
   .menu-xs-container {
     position: relative;
   }
   .card {
     padding: 10px 35px;
   }
-
   .menu {
     z-index: 2;
     position: absolute;
@@ -118,6 +115,14 @@ header {
     }
     a {
       color: var(--text-color);
+    }
+    .login {
+      color: green;
+      font-weight: 500;
+    }
+    .logout {
+      color: var(--danger-1);
+      font-weight: 500;
     }
   }
 }

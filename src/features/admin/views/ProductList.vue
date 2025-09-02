@@ -32,7 +32,7 @@ onMounted(async () => {
   await adminProductStore.adminGetProducts()
 })
 
-async function deleteProduct(id: string) {
+async function deleteProduct(id: number) {
   await adminProductStore.deleteProduct(id);
 }
 </script>

@@ -29,10 +29,11 @@
 </template>
 
 <script setup lang="ts">
+import type { ProductInterface } from '@/shared/services/interfaces';
 import { useProductStore } from '../../stores/productStore';
 
 defineProps<{
-  products: Array
+  products: ProductInterface[]
 }>()
 
 // Filtration des produits : SEARCH
@@ -61,8 +62,8 @@ async function filteredProductCategory(category: string, currentCategory: string
 function initFilteredProducts() {
   productStore.getProducts(false);
   productStore.searchTerm = '';
-  productStore.priceRange[0]
-  productStore.currentCategory[0]
+  productStore.priceRange = [0, 4000];
+  productStore.currentCategory = 'all';
 }
 </script>
 

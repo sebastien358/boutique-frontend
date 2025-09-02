@@ -1,6 +1,7 @@
 import axios from 'axios';
+import type { ProductInterface } from './interfaces';
 
-export async function axiosGetProducts() {
+export async function axiosGetProducts(): Promise<ProductInterface[] | null> {
   try {
     const response = await axios.get('http://127.0.0.1:8000/product');
     return response.data;
@@ -10,7 +11,7 @@ export async function axiosGetProducts() {
   }
 }
 
-export async function axiosSearchProducts(searchTerm: string) {
+export async function axiosSearchProducts(searchTerm: string): Promise<any> {
   try {
     const response = await axios.get('http://127.0.0.1:8000/product/search', {
       params: {
@@ -24,7 +25,7 @@ export async function axiosSearchProducts(searchTerm: string) {
   }
 }
 
-export async function axiosgetFilteredProductPrice(minPrice: number, maxPrice: number) {
+export async function axiosgetFilteredProductPrice(minPrice: number, maxPrice: number): Promise<anyr> {
   try {
      const response = await axios.get('http://127.0.0.1:8000/product/filtered/price', {
       params: {
@@ -39,7 +40,7 @@ export async function axiosgetFilteredProductPrice(minPrice: number, maxPrice: n
   }
 }
 
-export async function axiosgetFilteredProductCategory(category: string) {
+export async function axiosgetFilteredProductCategory(category: string): Promise<any> {
   try {
     const response = await axios.get('http://127.0.0.1:8000/product/filtered/category', {
     params: {

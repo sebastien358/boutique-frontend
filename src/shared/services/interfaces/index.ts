@@ -1,2 +1,3 @@
-export * from './Filters.interface';
-export * from './type';
+export * from './Product.interface';
+export * from './Authentification.interface';
+export * from './Category.interface';

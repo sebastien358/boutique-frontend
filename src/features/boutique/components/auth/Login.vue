@@ -75,7 +75,7 @@ const onSubmit = handleSubmit(async (dataLogin, {resetForm}) => {
   }
 });
 
-function setSuccessMessage(message, resetForm: () => void) {
+function setSuccessMessage(message: string, resetForm: () => void) {
   errorMessage.value = '';
   successMessage.value = message;
   setTimeout(() => {
@@ -85,7 +85,7 @@ function setSuccessMessage(message, resetForm: () => void) {
   }, 2000)
 }
 
-function setErrorMessage(message) {
+function setErrorMessage(message: string) {
   errorMessage.value = message;
   setTimeout(() => {
     errorMessage.value = '';

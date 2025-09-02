@@ -1,13 +1,22 @@
+import type { ProductInterface } from '@/shared/services/interfaces';
 import { axiosgetFilteredProductCategory, axiosgetFilteredProductPrice, axiosGetProducts, axiosSearchProducts } from '@/shared/services/product.service';
 import { defineStore } from 'pinia';
 
+interface StateProduct {
+  products: ProductInterface[],
+  isLoading: boolean,
+  searchTerm: string,
+  priceRange: [number, number],
+  currentCategory: string
+}
+
 export const useProductStore = defineStore('products', {
-  state: () => ({
+  state: (): StateProduct => ({
     products: [],
     isLoading: true,
     searchTerm: '',
-    priceRange: [0, 10000],
-    currentCategory: ['all']
+    priceRange: [0, 4000],
+    currentCategory: 'all'
   }),
   actions: {
     async getProducts(append = false) {
@@ -51,7 +60,7 @@ export const useProductStore = defineStore('products', {
         console.error('Erreur de la filtration des produits selon le prix', e);
       }
     },
-    async filteredProductCategory(category) {
+    async filteredProductCategory(category: string) {
       try {
         if (category === 'all') {
           const response = await axiosGetProducts();

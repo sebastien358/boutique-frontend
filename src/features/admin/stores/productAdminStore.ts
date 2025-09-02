@@ -3,15 +3,20 @@ import {
   axiosAdminGetProducts, 
   axiosAdminDeleteProduct, 
   axiosAdminGetProductId, 
-  axiosAdminUpdateProduct, 
-  axiosAdminDeletePicture
+  axiosAdminUpdateProduct,
+  axiosAdminDeletePicture, 
 } from '@/shared/services/admin/productAdmin.service';
 import { defineStore } from 'pinia';
 import { useProductStore } from '@/features/boutique/stores/productStore';
+import type { ProductFormInterface, ProductInterface } from '@/shared/services/interfaces';
 
+interface StateAdminProduct {
+  products: ProductInterface[],
+  isLoading: boolean
+}
 
 export const useAdminProductStore = defineStore('adminProduct', {
-  state: () => ({
+  state: (): StateAdminProduct => ({
     products: [],
     isLoading: true
   }),
@@ -32,7 +37,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
         this.isLoading = false;
       }
     },
-    async getProductId(id: string) {
+    async getProductId(id: number) {
       try {
         const response = await axiosAdminGetProductId(id);
         return response;
@@ -40,7 +45,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
         console.error('Erreur de la récupération d\'un produit', e);
       }
     },
-    async addProduct(dataProduct) {
+    async addProduct(dataProduct: ProductFormInterface) {
       try {
         const { title, description, price, category, images } = dataProduct;
         const formData = new FormData();
@@ -61,7 +66,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
         console.error('Erreur de l\'ajout d\'un produit', e);
       }
     },
-    async updateProduct(dataProduct, id: string) { 
+    async updateProduct(dataProduct: ProductFormInterface, id: string) { 
       try { 
         const productStore = useProductStore(); 
         const { title, description, price, images, category } = dataProduct; 
@@ -70,7 +75,6 @@ export const useAdminProductStore = defineStore('adminProduct', {
         formData.append('description', description);
         formData.append('price', price);
         formData.append('category', category);
-        // Envoie les nouvelles images
         if (images && images.length > 0) {
           const newImages = images.filter(image => image instanceof File);
           newImages.forEach((image) => {
@@ -92,7 +96,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
         console.error('Erreur de la modification d\'un produit', e); 
       } 
     },
-    async deleteProduct(id: string) {
+    async deleteProduct(id: number) {
       try {
         const productStore = useProductStore();
         await axiosAdminDeleteProduct(id);
@@ -103,12 +107,13 @@ export const useAdminProductStore = defineStore('adminProduct', {
         throw e;
       }
     },
-    async deleteImage(productId: string, pictureId: string) {
-    try {
-      return await axiosAdminDeletePicture(productId, pictureId);
-    } catch(e) {
-      console.log('Erreur de la suppression d\'une image', e);
-      } 
+    async deletePicture(productId: number, pictureId: number) {
+      try {
+        const response = await axiosAdminDeletePicture(productId, pictureId);
+        return response;
+      } catch(e) {
+        console.error('Erreur de la supression d\'une image', e);
+      }
     }
   }
 });
