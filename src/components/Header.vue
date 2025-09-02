@@ -36,12 +36,19 @@
             <li>
               <router-link to="/admin">Admin</router-link>
             </li>
-            <li>
-              <a href="#">Inscription</a>
-            </li>
-            <li>
-              <a href="#">Connexion</a>
-            </li>
+            <div v-if="!authStore.isLoggedIn">
+              <li>
+                <router-link to="/register">Inscription</router-link>
+              </li>
+              <li>
+                <router-link to="/login">Connexion</router-link>
+              </li>
+            </div>
+            <div v-else>
+              <li>
+                <a @click="authStore.logout()" hre="#">Déconnexion</a>
+              </li>
+            </div>
           </ul>
         </Transition>
       </div>
