@@ -14,6 +14,7 @@ onMounted(async () => {
   <div>
     <Shop 
       :products="productStore.products" 
+      :isLoading="productStore.isLoading"
     />
   </div>
 </template>

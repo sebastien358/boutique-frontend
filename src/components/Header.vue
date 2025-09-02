@@ -1,15 +1,5 @@
-<script setup lang="ts">
-import { useAuthStore } from '@/features/admin/stores/authStore';
-import { ref } from 'vue'
-import { routerViewLocationKey } from 'vue-router';
-
-const open = ref<boolean>(false)
-
-const authStore = useAuthStore();
-</script>
-
 <template>
-  <header class="px-20 d-flex flex-row align-items-center">
+  <header class="d-flex flex-row align-items-center">
     <router-link to="/boutique" class="d-flex flex-row align-items-center mr-20 router-logo">
       <img src="../assets/images/logo.svg" />
       <span class="logo">DigitalStore</span>
@@ -59,10 +49,20 @@ const authStore = useAuthStore();
   </header>
 </template>
 
+<script setup lang="ts">
+import { useAuthStore } from '@/features/admin/stores/authStore';
+import { ref } from 'vue'
+
+const open = ref<boolean>(false)
+
+const authStore = useAuthStore();
+</script>
+
 <style lang="scss" scoped>
 @use '@/assets/scss/mixins';
 
 header {
+  padding: 0 12px 0 10px;
   background-color: var(--primary-1);
   .router-logo {
     text-decoration: none;
@@ -83,13 +83,13 @@ header {
     color: white;
     font-size: 20px;
     cursor: pointer;
-    @include mixins.sm {
+    @include mixins.lg {
       display: none;
     }
   }
 
   .actions-container {
-    @include mixins.xs {
+    @include mixins.lg-mobile {
       justify-content: end;
     }
   }
@@ -97,12 +97,15 @@ header {
   .menu-xs-container {
     position: relative;
   }
+  .card {
+    padding: 10px 35px;
+  }
 
   .menu {
     z-index: 2;
     position: absolute;
-    top: 20px;
-    right: 0px;
+    top: 42px;
+    right: -5px;
     li {
       padding: 10px;
     }

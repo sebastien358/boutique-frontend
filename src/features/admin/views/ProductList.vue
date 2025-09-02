@@ -2,12 +2,10 @@
   <div class="product-list p-20">
     <div v-for="product in products" :key="product.id" class="card">
       <div v-if="product.pictures && product.pictures.length > 0">
-        <!-- <div v-for="(picture, index) in product.pictures" :key="index" class="d-flex align-items-center"> -->
-          <div class="d-flex align-items-center">
-            <img :src="product.pictures[0].url" />
-            <h3>{{ product.title }}</h3>
-          </div>
-        <!-- </div> -->
+        <div class="d-flex align-items-center">
+          <img :src="product.pictures[0].url" />
+          <h3>{{ product.title }}</h3>
+        </div>
       </div>
       <div v-else>
          <img src="../../../assets//images/not-found.webp" />

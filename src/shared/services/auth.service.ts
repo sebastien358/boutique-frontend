@@ -8,7 +8,8 @@ export async function axiosRegister(dataRegister) {
     });
     return response.data;
   } catch(e) {
-    console.error('Erreur serveur : ', e) 
+    console.error('Erreur serveur : ', e);
+    throw e;
   }
 }
 
@@ -39,12 +40,11 @@ export const axiosEmailExists = async (dataLogin) => {
 }
 
 export const authMiddleware = (TOKEN_KEY) => (config) => {
-  console.log('Auth middleware appelé');
   const token = localStorage.getItem(TOKEN_KEY);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  console.log('Request headers :', config.headers);
+  console.log('REQUEST_HEADERS :', config.headers);
   return config;
 }
 

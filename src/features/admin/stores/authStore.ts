@@ -27,12 +27,8 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axiosRegister(dataRegister)
         return response;
-      } catch (error) {
-        console.error(error)
-        if (error.response) {
-          console.error(error.response.data)
-        }
-        throw error
+      } catch (e) {
+        console.error(e);
       }
     },
    async emailExists(dataLogin) {

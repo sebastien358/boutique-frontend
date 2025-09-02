@@ -19,6 +19,6 @@ import NavBar from "./components/NavBar.vue";
 .admin {
   height: 100%;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 180px 1fr;
 }
 </style>

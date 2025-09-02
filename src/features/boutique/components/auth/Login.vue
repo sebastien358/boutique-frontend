@@ -38,13 +38,18 @@ const router = useRouter();
 const successMessage = ref('');
 const errorMessage = ref('');
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{4,10}$/;
+
 const schema = z.object({
   email: z
     .email({ message: 'Un email est requis' }),
   password: z
     .string({ message: 'Un mot de passe est requis' })
     .min(4, { message: 'Le mot de passe ne doit pas doit pas être inférieur à 4 caractères' })
-    .max(180, { message: 'Le mot de passe ne doit pas doit pas être supérieur à 180 caractères' }),
+    .max(180, { message: 'Le mot de passe ne doit pas doit pas être supérieur à 180 caractères' })
+    .refine(value => passwordRegex.test(value), {
+      message: 'Le mot de passe doit contenir : Une Majuscule, une minuscule, 1 chiffre et un carctère spécial'
+    })
 })
 
 const { handleSubmit, isSubmitting } =  useForm({

@@ -9,6 +9,7 @@ import {
 import { defineStore } from 'pinia';
 import { useProductStore } from '@/features/boutique/stores/productStore';
 
+
 export const useAdminProductStore = defineStore('adminProduct', {
   state: () => ({
     products: [],
@@ -41,15 +42,18 @@ export const useAdminProductStore = defineStore('adminProduct', {
     },
     async addProduct(dataProduct) {
       try {
-        const productStore = useProductStore();
-        const { title, description, price, images } = dataProduct;
+        const { title, description, price, category, images } = dataProduct;
         const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('price', price);
-        images.forEach((image) => {
-          formData.append(`filename[]`, image);
-        });
+        formData.append('title', title)
+        formData.append('description', description)
+        formData.append('price', price)
+        formData.append('category', category)
+        if (images && images.length > 0) {
+           images.forEach(image => {
+            formData.append('filename[]', image)
+          })
+        }
+        const productStore = useProductStore();
         const response = await axiosAdminAddProduct(formData);
         this.products.push(response);
         productStore.products.push(response);
@@ -60,30 +64,29 @@ export const useAdminProductStore = defineStore('adminProduct', {
     async updateProduct(dataProduct, id: string) { 
       try { 
         const productStore = useProductStore(); 
-        const { title, description, price, images } = dataProduct; 
+        const { title, description, price, images, category } = dataProduct; 
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
         formData.append('price', price);
-
+        formData.append('category', category);
         // Envoie les nouvelles images
-        const newImages = images.filter(image => image instanceof File);
-        newImages.forEach((image) => {
-          formData.append(`filename[]`, image);
-        });
-
+        if (images && images.length > 0) {
+          const newImages = images.filter(image => image instanceof File);
+          newImages.forEach((image) => {
+            formData.append('filename[]', image);
+          });
+        }
         const response = await axiosAdminUpdateProduct(formData, id); 
-
-        const productIndex = productStore.products.findIndex(p => p.id === id); 
-        const index = this.products.findIndex(product => product.id === id); 
-
+        const productIndex = productStore.products.findIndex(p => p.id === response.id); 
+        const index = this.products.findIndex(product => product.id === response.id); 
         if (index !== -1) { 
-          this.products[index] = { ...this.products[index], ...response.data }; 
-          this.products[index].pictures = response.data.pictures; 
+          this.products[index] = { ...this.products[index], ...response }; 
+          this.products[index].images = response.pictures; 
         } 
         if (productIndex !== -1) { 
-          productStore.products[productIndex] = { ...productStore.products[productIndex], ...response.data }; 
-          productStore.products[productIndex].pictures = response.data.pictures; 
+          productStore.products[productIndex] = { ...productStore.products[productIndex], ...response }; 
+          productStore.products[productIndex].images = response.pictures; 
         } 
       } catch(e) { 
         console.error('Erreur de la modification d\'un produit', e); 

@@ -25,11 +25,8 @@ export async function axiosAdminAddProduct(formData) {
     const response = await axios.post('http://127.0.0.1:8000/admin/product/new', formData);
     return response.data;
   } catch(e) {
-    console.error('Erreur serveur : ', e.response);
-    if (e.response) {
-      console.error('Données de l\'erreur : ', e.response.data);
-      console.error('Statut de l\'erreur : ', e.response.status);
-    }
+    console.error('Erreur serveur : ', e);
+    throw e;
   }
 }
 
@@ -38,11 +35,8 @@ export async function axiosAdminUpdateProduct(formData, id: string) {
     const response = await axios.post(`http://127.0.0.1:8000/admin/product/update/${id}`, formData);
     return response.data;
   } catch(e) {
-    console.error('Erreur serveur : ', e.response);
-    if (e.response) {
-      console.error('Données de l\'erreur : ', e.response.data);
-      console.error('Statut de l\'erreur : ', e.response.status);
-    }
+    console.error('Erreur serveur : ', e);
+    throw e;
   }
 }
 
@@ -52,6 +46,7 @@ export const axiosAdminDeleteProduct = async (id: string) => {
     return response.data;
   } catch(e) {
     console.error('Erreur serveur :', e);
+    throw e;
   }
 } 
 
@@ -61,5 +56,6 @@ export const axiosAdminDeletePicture = async (productId: string, pictureId: stri
     return response.data;
   } catch(e) {
     console.error('Erreur serveur :', e);
+    throw e;
   }
 }

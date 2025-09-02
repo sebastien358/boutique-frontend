@@ -34,17 +34,14 @@ button {
   background: white;
   font-weight: 500;
   font-size: 13px;
-  &:hover {
-    border-radius: var(--border-radius);
-    background: black;
-    color: white;
-    
-  }
+  width: 100%;
+  border: var(--border);
 }
 
 .router-link-active button {
-  background: black;
+  background: var(--gray-3);
   border-radius: var(--border-radius);
+  border: 0;
   color: white;
 }
 

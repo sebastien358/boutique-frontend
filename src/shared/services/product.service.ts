@@ -6,19 +6,49 @@ export async function axiosGetProducts() {
     return response.data;
   } catch(e) {
     console.error('Erreur serveur : ', e);
+    throw e;
   }
 }
 
-export async function axiosGetFilteredProducts(searchTerm: string) {
+export async function axiosSearchProducts(searchTerm: string) {
   try {
-    const response = axios.get('http://127.0.0.1:8000/product/search', {
+    const response = await axios.get('http://127.0.0.1:8000/product/search', {
       params: {
         search: searchTerm
       }
     })
-    return (await response).data;
+    return response.data;
   } catch(e) {
-    console.log('Erreur serveur : ', e);
+    console.error('Erreur serveur : ', e);
+    throw e;
   }
 }
 
+export async function axiosgetFilteredProductPrice(minPrice: number, maxPrice: number) {
+  try {
+     const response = await axios.get('http://127.0.0.1:8000/product/filtered/price', {
+      params: {
+        minPrice,
+        maxPrice
+      }
+    })
+    return response.data;
+  } catch(e) {
+    console.error('Erreur serveur : ', e);
+    throw e;
+  }
+}
+
+export async function axiosgetFilteredProductCategory(category: string) {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/product/filtered/category', {
+    params: {
+      category
+    }
+  })
+    return response.data;
+  } catch(e) {
+    console.error('Erreur serveur : ', e);
+    throw e;
+  }
+}

@@ -34,11 +34,14 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useAuthStore } from '../../../admin/stores/authStore'
 import * as z from 'zod'
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 
 const successMessage = ref('');
 const errorMessage = ref('');
+
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{4,10}$/;
 
 const schema = z.object({
   email: z
@@ -47,7 +50,10 @@ const schema = z.object({
   password: z
     .string({ message: 'Un email est requis' })
     .min(4, { message: 'Le titre doit comporter au moins 5 caractères' })
-    .max(180, { message: 'Le titre ne peut pas dépasser 45 caractères' }),
+    .max(180, { message: 'Le titre ne peut pas dépasser 45 caractères' })
+    .refine(value => passwordRegex.test(value), {
+      message: 'Le mot de passe doit contenir : Une Majuscule, une minuscule, 1 chiffre et un carctère spécial'
+    }),
   confirmPassword: z
     .string({ message: 'Le prix doit être un nombre' })
     .min(4, { message: 'Le titre doit comporter au moins 5 caractères' })
@@ -80,11 +86,14 @@ const onSubmit = handleSubmit(async (dataRegister, {resetForm}) => {
   }
 });
 
+const router = useRouter();
+
 function setSuccessMessage(message, resetForm: () => void) {
   errorMessage.value = '';
   successMessage.value = message;
   setTimeout(() => {
     successMessage.value = '';
+    router.push({path: '/login'});
     resetForm();
   }, 2000)
 }
