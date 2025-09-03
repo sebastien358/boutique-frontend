@@ -62,13 +62,13 @@ const { value: password, errorMessage: errorPassword } = useField('password');
 
 const onSubmit = handleSubmit(async (dataLogin, {resetForm}) => { 
   try {
-   const response = await authStore.emailExists(dataLogin);
-   if (!response) {
+   const emailExist = await authStore.emailExists(dataLogin);
+   if (!emailExist) {
       setErrorMessage('Aucun compte n\'existe avec cet email.');
    } else {
       await authStore.login(dataLogin);
       authStore.isLoggedIn ? setSuccessMessage('La connexion a bien réussie', resetForm) : 
-        setErrorMessage('Mot de passe invalide.')
+        setErrorMessage('Mot de passe invalide.');
     }
   } catch(e) {
     setErrorMessage('Erreur login');

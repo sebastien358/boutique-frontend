@@ -3,7 +3,7 @@ import { authMiddleware, axiosEmailExists, axiosLogin, axiosRegister } from '@/s
 import type { LoginInterface, RegisterInterface } from '@/shared/services/interfaces'
 import { jwtDecode } from 'jwt-decode';
 
-const TOKEN_KEY = 'token'
+const TOKEN_KEY = 'token';
 
 interface StateAuthentification {
   token: string,
@@ -24,8 +24,8 @@ export const useAuthStore = defineStore('auth', {
           localStorage.setItem(TOKEN_KEY, response.token);
           authMiddleware(TOKEN_KEY);
           console.log('TOKEN : ', response.token);
-          if (!this.checkTokenExpiration) {
-            console.log('Le token a expiré');
+          if (!this.checkTokenExpiration()) {
+            console.log('LE TOKEN A EXPIRÉ');
           }
         } else {
           console.log('Erreur connexion : token non défini');
@@ -37,10 +37,11 @@ export const useAuthStore = defineStore('auth', {
     checkTokenExpiration() {
       const token = localStorage.getItem(TOKEN_KEY);
       if (token) {
-        const decotedToken = jwtDecode(token);
-        const expiresAt = decotedToken.exp;
+        const decodedToken = jwtDecode(token);
+        const expiresAt = decodedToken.exp;
         if (new Date().getTime() / 1000 > expiresAt) {
           this.logout();
+          window.location.href = '/login';
           return false;
         }
         return true;
@@ -65,9 +66,9 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout() {
-      this.isLoggedIn = null
-      localStorage.removeItem(TOKEN_KEY)
-      window.location.href = '/login'
+      this.isLoggedIn = null;
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.href = '/login';
     },
   },
 })
