@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import { authMiddleware, axiosEmailExists, axiosLogin, axiosRegister } from '@/shared/services/auth.service'
 import type { LoginInterface, RegisterInterface } from '@/shared/services/interfaces'
+import { jwtDecode } from 'jwt-decode';
+
 const TOKEN_KEY = 'token'
 
 interface StateAuthentification {
   token: string,
-  isLoggedIn: boolean
+  isLoggedIn: boolean,
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -16,18 +18,34 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(dataLogin: LoginInterface) {
       try {
-        const response = await axiosLogin(dataLogin)
+        const response = await axiosLogin(dataLogin);
         if (response && response.token) {
-          this.isLoggedIn = true
-          localStorage.setItem(TOKEN_KEY, response.token)
+          this.isLoggedIn = true;
+          localStorage.setItem(TOKEN_KEY, response.token);
           authMiddleware(TOKEN_KEY);
-          console.log('TOKEN : ', response.token)
+          console.log('TOKEN : ', response.token);
+          if (!this.checkTokenExpiration) {
+            console.log('Le token a expiré');
+          }
         } else {
-          console.log('Erreur connexion : token non défini')
+          console.log('Erreur connexion : token non défini');
         }
       } catch (e) {
-        console.log('Erreur connexion', e)
+        console.log('Erreur connexion', e);
       }
+    },
+    checkTokenExpiration() {
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (token) {
+        const decotedToken = jwtDecode(token);
+        const expiresAt = decotedToken.exp;
+        if (new Date().getTime() / 1000 > expiresAt) {
+          this.logout();
+          return false;
+        }
+        return true;
+      }
+      return false;
     },
     async register(dataRegister: RegisterInterface) {
       try {

@@ -43,7 +43,7 @@
     <!-- Affichage des images  -->
     <div v-for="(picture, index) in product.pictures" :key="index" class="container-images">
       <div class="d-flex flex-column align-items-center">
-         <img :src="picture.filename" alt="Image du produit" class="img"/>
+         <img :src="picture.url" alt="Image du produit" class="img"/>
         <button @click="onClickDeletePicture(product.id, picture.id)" class="btn btn-danger">Supprimer</button>
       </div>
     </div>
@@ -59,7 +59,6 @@ import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { useAdminCategoryStore } from '../stores/categoryAdminStore';
 import { axiosAdmingetCategories } from '@/shared/services/category.service';
-import type { ProductFormInterface } from '@/shared/services/interfaces';
 
 // je récupères les données des différentes catégories dans le select html pour la séléction.
 

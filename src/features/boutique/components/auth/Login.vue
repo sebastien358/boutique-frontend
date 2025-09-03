@@ -42,7 +42,8 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$
 
 const schema = z.object({
   email: z
-    .email({ message: 'Un email est requis' }),
+    .string({ message: 'Le titre est requis' })
+    .email(),
   password: z
     .string({ message: 'Un mot de passe est requis' })
     .min(4, { message: 'Le mot de passe ne doit pas doit pas être inférieur à 4 caractères' })
