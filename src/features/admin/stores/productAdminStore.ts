@@ -22,7 +22,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
     isLoading: true
   }),
   actions: {
-    async adminGetProducts(page = 1, limit = 10) {
+    async adminGetProducts(page = 1, limit = 3) {
       try {
         this.isLoading = true;
         const response = await axiosAdminGetProducts(page, limit);
@@ -107,12 +107,11 @@ export const useAdminProductStore = defineStore('adminProduct', {
     },
     async deleteProduct(id: number) {
       try {
-        const productStore = useProductStore();
-        await axiosDeleteProduct(id);
+        const response = await axiosDeleteProduct(id);
         this.products = this.products.filter(p => p.id !== id);
-        productStore.products = productStore.products.filter(p => p.id !== id);
-      } catch(e) {
-        console.error('Erreur de la supression d\'un produit', e);
+        return response;
+      } catch (error) {
+        console.error(error);
       }
     },
     async deleteImage(productId: number, pictureId: number) {
