@@ -1,14 +1,14 @@
 import { 
-  axiosAdminAddProduct, 
-  axiosAdminGetProducts, 
-  axiosAdminDeleteProduct, 
-  axiosAdminGetProductId, 
-  axiosAdminUpdateProduct,
-  axiosAdminDeletePicture, 
+  axiosAddProduct,
+  axiosAdminGetProduct,
+  axiosAdminGetProducts,
+  axiosDeleteImage,
+  axiosDeleteProduct,
+  axiosUpdateProduct, 
 } from '@/shared/services/admin/productAdmin.service';
 import { defineStore } from 'pinia';
-import { useProductStore } from '@/features/boutique/stores/productStore';
 import type { ProductFormInterface, ProductInterface } from '@/shared/services/interfaces';
+import { useProductStore } from '@/features/boutique/stores/productStore';
 
 interface StateAdminProduct {
   products: ProductInterface[],
@@ -37,9 +37,9 @@ export const useAdminProductStore = defineStore('adminProduct', {
         this.isLoading = false;
       }
     },
-    async getProductId(id: number) {
+    async getProduct(id: number) {
       try {
-        const response = await axiosAdminGetProductId(id);
+        const response = await axiosAdminGetProduct(id);
         return response;
       } catch(e) {
         console.error('Erreur de la récupération d\'un produit', e);
@@ -47,21 +47,19 @@ export const useAdminProductStore = defineStore('adminProduct', {
     },
     async addProduct(dataProduct: ProductFormInterface) {
       try {
-        const { title, description, price, category, images } = dataProduct;
         const formData = new FormData();
-        formData.append('title', title)
-        formData.append('description', description)
-        formData.append('price', price)
-        formData.append('category', category)
+        const { title, price, description, images, category } = dataProduct;
+        formData.append('title', title);
+        formData.append('price', price);
+        formData.append('description', description);
+        formData.append('category', category);
         if (images && images.length > 0) {
-           images.forEach(image => {
-            formData.append('filename[]', image)
-          })
+          images.forEach(image => {
+            formData.append('filename[]', image);
+          });
         }
-        const productStore = useProductStore();
-        const response = await axiosAdminAddProduct(formData);
-        this.products.push(response);
-        productStore.products.push(response);
+        const response = await axiosAddProduct(formData);
+        this.products = response;
       } catch(e) {
         console.error('Erreur de l\'ajout d\'un produit', e);
       }
@@ -81,7 +79,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
             formData.append('filename[]', image);
           });
         }
-        const response = await axiosAdminUpdateProduct(formData, id); 
+        const response = await axiosUpdateProduct(formData, id); 
         const productIndex = productStore.products.findIndex(p => p.id === response.id); 
         const index = this.products.findIndex(product => product.id === response.id); 
         if (index !== -1) { 
@@ -99,20 +97,19 @@ export const useAdminProductStore = defineStore('adminProduct', {
     async deleteProduct(id: number) {
       try {
         const productStore = useProductStore();
-        await axiosAdminDeleteProduct(id);
+        await axiosDeleteProduct(id);
         this.products = this.products.filter(p => p.id !== id);
         productStore.products = productStore.products.filter(p => p.id !== id);
       } catch(e) {
-        console.log('Erreur de la suppression d\'un produit', e);
-        throw e;
+        console.error('Erreur de la supression d\'un produit', e);
       }
     },
-    async deletePicture(productId: number, pictureId: number) {
+    async deleteImage(productId: number, pictureId: number) {
       try {
-        const response = await axiosAdminDeletePicture(productId, pictureId);
+        const response = await axiosDeleteImage(productId, pictureId);
         return response;
       } catch(e) {
-        console.error('Erreur de la supression d\'une image', e);
+        console.error('Erreur de la suppression d\'une image', e);
       }
     }
   }

@@ -3,7 +3,7 @@ import type { ProductInterface } from './interfaces';
 
 export async function axiosGetProducts(): Promise<ProductInterface[] | null> {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/product');
+    const response = await axios.get('http://127.0.0.1:8000/products');
     return response.data;
   } catch(e) {
     console.error('Erreur serveur : ', e);
@@ -11,13 +11,13 @@ export async function axiosGetProducts(): Promise<ProductInterface[] | null> {
   }
 }
 
-export async function axiosSearchProducts(searchTerm: string): Promise<any> {
+export async function axiosSearchProducts(search :string): Promise<string>{
   try {
-    const response = await axios.get('http://127.0.0.1:8000/product/search', {
+    const response = await axios.get('http://127.0.0.1:8000/products/search', {
       params: {
-        search: searchTerm
+        search
       }
-    })
+    });
     return response.data;
   } catch(e) {
     console.error('Erreur serveur : ', e);
@@ -25,14 +25,14 @@ export async function axiosSearchProducts(searchTerm: string): Promise<any> {
   }
 }
 
-export async function axiosgetFilteredProductPrice(minPrice: number, maxPrice: number): Promise<anyr> {
+export async function axiosFilteredProductsPrice(minPrice: number, maxPrice: number): Promise<number>{
   try {
-     const response = await axios.get('http://127.0.0.1:8000/product/filtered/price', {
+    const response = await axios.get('http://127.0.0.1:8000/products/filtered/price', {
       params: {
-        minPrice,
+        minPrice, 
         maxPrice
       }
-    })
+    });
     return response.data;
   } catch(e) {
     console.error('Erreur serveur : ', e);
@@ -40,13 +40,13 @@ export async function axiosgetFilteredProductPrice(minPrice: number, maxPrice: n
   }
 }
 
-export async function axiosgetFilteredProductCategory(category: string): Promise<any> {
+export async function axiosFilteredProductsCategory(category: string): Promise<string>{
   try {
-    const response = await axios.get('http://127.0.0.1:8000/product/filtered/category', {
-    params: {
-      category
-    }
-  })
+    const response = await axios.get('http://127.0.0.1:8000/products/filtered/category', {
+      params: {
+        category
+      }
+    });
     return response.data;
   } catch(e) {
     console.error('Erreur serveur : ', e);

@@ -73,16 +73,16 @@ const { value: confirmPassword, errorMessage: errorConfirmPassword } = useField(
 
 const onSubmit = handleSubmit(async (dataRegister, {resetForm}) => {
   try {
-    const response = await authStore.register(dataRegister);
-    if (dataRegister && response) {
-      setSuccessMessage('L\'inscription a bien réussie', resetForm);
+    const emailExists = await authStore.emailExists(dataRegister);
+    if (emailExists) {
+      setErrorMessage('Un compte existe avec cet email');
     } else {
-      console.error('Error registration !!!')
+      await authStore.register(dataRegister);
+      setSuccessMessage('L\'inscription a réussie', resetForm);
     }
-    
   } catch(e) {
-    setErrorMessage('Erreur de l\'inscription');
-    console.error('Erreur de l\'inscription', e);
+    setErrorMessage('L\'inscription n\'a pas pu aboutir');
+    console.error('Erreur de l\'inscription,', e);
   }
 });
 

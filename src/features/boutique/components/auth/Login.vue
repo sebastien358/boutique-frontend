@@ -94,7 +94,6 @@ function setErrorMessage(message: string) {
 }
 </script>
 
-
 <style scoped lang="scss">
 .login {
   height: 100%;

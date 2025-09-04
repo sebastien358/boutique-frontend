@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { authMiddleware, axiosEmailExists, axiosLogin, axiosRegister } from '@/shared/services/auth.service'
-import type { LoginInterface, RegisterInterface } from '@/shared/services/interfaces'
+import type { LoginInterface, RegisterInterface } from '@/shared/services/interfaces';
+import { authMiddleware, axiosEmailExist, axiosLogin, axiosRegister } from '@/shared/services/auth.service';
 import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from 'jwt-decode';
 
 const TOKEN_KEY = 'token';
 
@@ -20,18 +21,34 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axiosLogin(dataLogin);
         if (response && response.token) {
-          this.isLoggedIn = true;
           localStorage.setItem(TOKEN_KEY, response.token);
           authMiddleware(TOKEN_KEY);
-          console.log('TOKEN : ', response.token);
+          this.isLoggedIn = true;
+          console.log('TOKEN_KEY : ', response.token);
           if (!this.checkTokenExpiration()) {
-            console.log('LE TOKEN A EXPIRÉ');
+            console.log('Token : Le token n\'est plus valide');
           }
         } else {
-          console.log('Erreur connexion : token non défini');
+          console.log('Erreur token : Token non défini');
         }
       } catch (e) {
         console.log('Erreur connexion', e);
+      }
+    },
+    async register(dataRegister: RegisterInterface) {
+      try {
+        const response = await axiosRegister(dataRegister);
+        return response;
+      } catch(e) {
+        console.error('Erreur de l\'inscription', e);
+      }
+    },
+    async emailExists(dataRegister?: string, dataLogin?: string): Promise<any> {
+      try {
+        const response = await axiosEmailExist(dataRegister, dataLogin);
+        return response;
+      } catch(e) {
+        console.error('Erreur de la récupération d\'un email utilisateur');
       }
     },
     checkTokenExpiration() {
@@ -48,27 +65,10 @@ export const useAuthStore = defineStore('auth', {
       }
       return false;
     },
-    async register(dataRegister: RegisterInterface) {
-      try {
-        const response = await axiosRegister(dataRegister)
-        return response;
-      } catch (e) {
-        console.error(e);
-      }
-    },
-   async emailExists(dataLogin: string) {
-      try {
-        const result = await axiosEmailExists(dataLogin);
-        return result;
-      } catch (e) {
-        console.error('Erreur serveur', e);
-        throw e;
-      }
-    },
-    logout() {
-      this.isLoggedIn = null;
+    logout(router) {
       localStorage.removeItem(TOKEN_KEY);
-      window.location.href = '/login';
-    },
+      this.isLoggedIn = false;
+      router.push({path: '/login'})
+    }
   },
 })

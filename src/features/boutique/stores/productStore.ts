@@ -1,5 +1,5 @@
 import type { ProductInterface } from '@/shared/services/interfaces';
-import { axiosgetFilteredProductCategory, axiosgetFilteredProductPrice, axiosGetProducts, axiosSearchProducts } from '@/shared/services/product.service';
+import { axiosFilteredProductsCategory, axiosFilteredProductsPrice, axiosGetProducts, axiosSearchProducts } from '@/shared/services/product.service';
 import { defineStore } from 'pinia';
 
 interface StateProduct {
@@ -37,41 +37,40 @@ export const useProductStore = defineStore('products', {
           }
         }
       } catch(e) {
-        console.error('Erreur de la récupértion des produits', e);
+        console.error('Erreur de la récupération des produits', e);
       } finally {
         this.isLoading = false
       }
     },
-    async searchProducts(searchTerm: string) {
+    async searchProduct(search: string) {
       try {
-        const response = await axiosSearchProducts(searchTerm);
+        const response = await axiosSearchProducts(search.trim());
         response ? this.products = response : this.products = [];
       } catch(e) {
-        console.error('Erreur search products', e);
+        console.error('Erreur search product', e);
       }
     },
-    async filteredProductPrice(priceRange: number[]) {
+    async filteredPrice(priceRange: number[]) {
       try {
         const minPrice = priceRange[0];
         const maxPrice = priceRange[1];
-        const response = await axiosgetFilteredProductPrice(minPrice, maxPrice) 
+        const response = await axiosFilteredProductsPrice(minPrice, maxPrice);
         response ? this.products = response : this.products = [];
       } catch(e) {
-        console.error('Erreur de la filtration des produits selon le prix', e);
+        console.error('Erreur de la filtration des produits par le prix', e);
       }
     },
-    async filteredProductCategory(category: string) {
+    async filteredCategory(category: string) {
       try {
+        const response = await axiosFilteredProductsCategory(category);
         if (category === 'all') {
-          const response = await axiosGetProducts();
-          this.products = response
+          await this.getProducts();
         } else {
-          const response = await axiosgetFilteredProductCategory(category);
           response ? this.products = response : this.products = [];
         }
       } catch(e) {
-        console.error('Erreur de la filtration des produits selon la catégorie', e);
+        console.error('Erreur de la filtration des produits par le prix', e);
       }
-    }
+    },
   }
 });   

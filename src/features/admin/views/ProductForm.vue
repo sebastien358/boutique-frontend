@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column justify-content-center align-items-center product-form p-20">
     <div class="container-form card">
-      <h3 class="mb-20">{{ product ? 'Modifier' : 'Ajouter un produit' }}</h3>
+      <h3 class="mb-20">{{ product ? 'Modifier le produit' : 'Ajouter un produit' }}</h3>
       <form @submit.prevent="onSubmit">
         <div class="d-flex flex-column mb-20">
           <label for="title">*Nom du produit</label>
@@ -20,7 +20,7 @@
         </div>
         <div class="d-flex flex-column mb-20">
           <label for="image">*Image</label>
-          <input type="file" multiple @change="onChangeImage($event.target.files)" />
+          <input type="file" multiple @change="onChangePictures($event.target.files)" />
           <span v-if="errorImage" class="form-error">{{ errorImage }}</span>
         </div>
         <div class="d-flex flex-column mb-10"> 
@@ -41,8 +41,8 @@
       </form>
     </div>
     <!-- Affichage des images  -->
-    <div v-for="(picture, index) in product.pictures" :key="index" class="container-images">
-      <div class="d-flex flex-column align-items-center">
+    <div class="container-images">
+      <div v-for="(picture, index) in product.pictures" :key="index" class="d-flex flex-column align-items-center">
          <img :src="picture.url" alt="Image du produit" class="img"/>
         <button @click="onClickDeletePicture(product.id, picture.id)" class="btn btn-danger">Supprimer</button>
       </div>
@@ -58,7 +58,6 @@ import { useAdminProductStore } from '../stores/productAdminStore';
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { useAdminCategoryStore } from '../stores/categoryAdminStore';
-import { axiosAdmingetCategories } from '@/shared/services/category.service';
 
 // je récupères les données des différentes catégories dans le select html pour la séléction.
 
@@ -75,35 +74,30 @@ const productAdminStore = useAdminProductStore();
 const router = useRouter();
 const route = useRoute();
 
-const product = ref('');
-
- if (route.params.id) {
-  product.value = await productAdminStore.getProductId(route.params.id);
-}
-
 // function de suppression d'une image
 
 async function onClickDeletePicture(productId: number, pictureId: number, index?: number) {
-  try {
-    await productAdminStore.deletePicture(productId, pictureId);
-    product.value.pictures.splice(index, 1);
-  } catch(e) {
-    console.error(e);
-  }
+  await productAdminStore.deleteImage(productId, pictureId);
+  product.value.pictures.splice(index, 1);
 }
 
 // récupération des donneés d'un produit dans le formulaire pour la modification 
 
+const product = ref('');
+
+if (route.params.id) {
+  product.value = await productAdminStore.getProduct(route.params.id);
+}
+
+// initiales values
+
 const initialValues = {
   title: product ? product.value.title : '',
   description: product ? product.value.description : '',
+  images: product ? product.value.images : [],
   price: product ? product.value.price : 0,
-  pictures: product ? product.value.pictures : [],
   category: product ? product.value.category : []
 }
-
-const categoryElem = await axiosAdmingetCategories();
-const categoryIds = categoryElem.map(category => category.id);
 
 // Schema
 
@@ -122,14 +116,13 @@ const schema = z.object({
     .coerce.number({ message: 'Le prix doit être un nombre' })
     .min(500, { message: 'Le prix doit être d\'au moins 500' })
     .max(10000, { message: 'Le prix ne peut pas dépasser 10000' }),
-  category: z.
-    coerce.number({ message: 'La catégorie est requise' }).refine(value => categoryIds.includes(value),
-      { message: 'La catégorie est invalide' })
+  category: z
+    .coerce.number({ message: 'La catégorie est requise' })
 })
 
 const { handleSubmit, isSubmitting } = useForm({
   validationSchema: toTypedSchema(schema),
-  initialValues,
+  initialValues
 });
 
 // fields inputs form
@@ -144,7 +137,7 @@ const { value: category, errorMessage: errorCategory } = useField('category');
 
 const images = ref(product.value ? product.value.pictures : []);
 
-function onChangeImage(files: FileList) {
+function onChangePictures(files: FileList) {
   images.value = [ ...images.value, ...files ];
 }
 
@@ -152,7 +145,6 @@ function onChangeImage(files: FileList) {
 
 const onSubmit = handleSubmit(async (dataProduct, {resetForm}) => {
   try {
-    console.log(dataProduct)
     if (!product.value) {
       delete dataProduct.image;
       dataProduct.images = images.value;
@@ -160,11 +152,11 @@ const onSubmit = handleSubmit(async (dataProduct, {resetForm}) => {
       setSuccessMessage('Le produit a bien été ajouté', resetForm);
     } else {
       delete dataProduct.image;
-      dataProduct.images = [...product.value.pictures, ...images.value];
-      await productAdminStore.updateProduct(dataProduct, route.params.id)
+      dataProduct.images = [...images.value];
+      await productAdminStore.updateProduct(dataProduct, route.params.id);
       setSuccessMessage('Le produit a bien été modifié', resetForm);
-      }
-    } catch(e) {
+    }
+  } catch(e) {
     setErrorMessage('Erreur de l\'envoi du formulaire');
     console.error('Erreur de l\'envoi du formulaire', e);
   }

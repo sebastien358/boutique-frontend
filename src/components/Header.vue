@@ -23,7 +23,7 @@
       </ul>
       <ul v-else class="hide-xs">
         <li>
-          <a @click="authStore.logout()" hre="#" class="logout">Déconnexion</a>
+          <a @click="logout()" hre="#" class="logout">Déconnexion</a>
         </li>
       </ul>
       <div class="menu-xs-container">
@@ -46,7 +46,7 @@
             </div>
             <div v-else>
               <li>
-                <a @click="authStore.logout()" href="#" class="logout">Déconnexion</a>
+                <a @click="logout()" href="#" class="logout">Déconnexion</a>
               </li>
             </div>
           </ul>
@@ -59,10 +59,16 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/features/admin/stores/authStore';
 import { ref } from 'vue'
+import { useRouter } from 'vue-router';
 
-const open = ref<boolean>(false)
+const open = ref<boolean>(false);
 
 const authStore = useAuthStore();
+const router = useRouter();
+
+function logout() {
+  authStore.logout(router);
+}
 </script>
 
 <style lang="scss" scoped>

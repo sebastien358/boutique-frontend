@@ -3,20 +3,46 @@
     <div class="d-flex flex-column">
       <div class="d-flex flex-column shop-filters_search">
         <h3 class="mb-5">Rechercher</h3>
-        <input @input="inputSearch()" v-model="productStore.searchTerm" type="text" placeholder="Rechercher" />
+        <input @input="filteredProductBySearch()" v-model="productStore.searchTerm" type="text" placeholder="Rechercher" />
       </div>
       <div class="d-flex flex-column">
         <h4 class="mb-10">Filter par prix</h4>
-        <div v-for="(priceRange, index) in [[0, 4000], [500, 1000], [1000, 1500], [2000, 4000]]" :key="index" class="shop-filters_price">
-          <input @input="inputfilterdProductPrice(priceRange)" :checked="productStore.priceRange[0] === priceRange[0]" name="priceRange" type="radio" class="mb-15 mr-5" />
-          <span>{{ priceRange[0] === 0 ? 'Tous les produits' : priceRange[0] === 2000 ? 'Plus de 2000' : `Entre ${priceRange[0]} et ${priceRange[1]}` }}</span>
+        <div 
+          v-for="(priceRange, index) in [[0, 4000], [500, 1000], [1000, 1500], [2000, 4000]]" 
+          :key="index" 
+          class="shop-filters_price"
+          >
+          <input 
+            @click="filteredProductByPrice(priceRange)" 
+            v-model="productStore.priceRange"
+            :checked="productStore.priceRange[0] === priceRange[0] && productStore.priceRange[1] === priceRange[1]" 
+            :value="priceRange" 
+            name="priceRange" 
+            type="radio" 
+            class="mb-15 mr-5" 
+          />
+          <span>
+            {{
+              priceRange[0] === 0 ? 
+              'Tous les produits' : priceRange[0] === 2000 ? 
+              'Plus de 2000' : `Entre ${priceRange[0]} et ${priceRange[1]}`
+            }}
+          </span>
         </div>
         <div class="d-flex flex-column shop-filters_category">
           <h4 class="mb-10">Filtrer par catégorie</h4>
-          <p v-for="(category, index) in ['all', 'streaming', 'gamer', 'desktop']" :key="index" name="category" class="mb-15 category">
-            <span @click="filteredProductCategory(category, [category])" :class="{'active-category': productStore.currentCategory.includes(category)}">
-              {{ category }}
-            </span>
+          <p 
+            v-for="(category, index) in ['all', 'streaming', 'gamer', 'desktop']" 
+            :key="index" :value="category" 
+            name="category" 
+            class="mb-15 category"
+          >
+          <span 
+            @click="filteredProductByCategory(category)" 
+            :class="{'active-category' : productStore.currentCategory.includes(category)}"
+            >
+            {{ category }}
+          </span>
           </p>
         </div>
       </div>
@@ -36,25 +62,25 @@ defineProps<{
   products: ProductInterface[]
 }>()
 
-// Filtration des produits : SEARCH
-
 const productStore = useProductStore();
 
-async function inputSearch() {
-  await productStore.searchProducts(productStore.searchTerm);
+// Filtration des produits : SEARCH
+
+async function filteredProductBySearch() {
+  await productStore.searchProduct(productStore.searchTerm);
 }
 
 // Filtration des produits : PRIX
 
-async function inputfilterdProductPrice(priceRange: number[]) {
-  await productStore.filteredProductPrice(priceRange); 
-} 
+async function filteredProductByPrice(priceRange: number[]) {
+  await productStore.filteredPrice(priceRange);
+}
 
 // Filtration des produits : CATÉGORIES
 
-async function filteredProductCategory(category: string, currentCategory: string[]) {
-  await productStore.filteredProductCategory(category);
-  productStore.currentCategory = currentCategory
+async function filteredProductByCategory(category: string) {
+  await productStore.filteredCategory(category);
+  productStore.currentCategory = category;
 }
 
 // Initialisation des produits
