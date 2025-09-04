@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import type { LoginInterface, RegisterInterface } from '@/shared/services/interfaces';
 import { authMiddleware, axiosEmailExist, axiosLogin, axiosRegister } from '@/shared/services/auth.service';
 import { jwtDecode } from 'jwt-decode';
-// import { jwtDecode } from 'jwt-decode';
 
 const TOKEN_KEY = 'token';
 
@@ -25,9 +24,6 @@ export const useAuthStore = defineStore('auth', {
           authMiddleware(TOKEN_KEY);
           this.isLoggedIn = true;
           console.log('TOKEN_KEY : ', response.token);
-          if (!this.checkTokenExpiration()) {
-            console.log('Token : Le token n\'est plus valide');
-          }
         } else {
           console.log('Erreur token : Token non défini');
         }
@@ -51,19 +47,32 @@ export const useAuthStore = defineStore('auth', {
         console.error('Erreur de la récupération d\'un email utilisateur');
       }
     },
-    checkTokenExpiration() {
-      const token = localStorage.getItem(TOKEN_KEY);
-      if (token) {
-        const decodedToken = jwtDecode(token);
-        const expiresAt = decodedToken.exp;
-        if (new Date().getTime() / 1000 > expiresAt) {
-          this.logout();
-          window.location.href = '/login';
-          return false;
+    async checkTokenExpiration() {
+      const token = localStorage.getItem('token');
+      const lastActivity = localStorage.getItem('lastActivity');
+      const tokenDuration = 15 * 60 * 1000; // 15 minutes
+      if (!token) {
+        console.log('Token non trouvé');
+      } else {
+        try {
+          const decodedToken = jwtDecode(token);
+          const currentTime = new Date().getTime();
+          if (!lastActivity) {
+            localStorage.setItem('lastActivity', currentTime);
+          } else {
+            const lastActivityTime = parseInt(lastActivity);
+            if (currentTime - lastActivityTime > tokenDuration) {
+              console.log('Token expiré : redirection vers la page de connexion');
+              this.logout(router);
+            } else {
+              localStorage.setItem('lastActivity', currentTime);
+            }
+          }
+        } catch (e) {
+          console.log('Erreur lors du traitement du token', e);
+          this.logout(router);
         }
-        return true;
       }
-      return false;
     },
     logout(router) {
       localStorage.removeItem(TOKEN_KEY);

@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
-</script>
-
 <template>
   <div class="app-container">
     <Header class="header" />
@@ -19,8 +14,22 @@ import Footer from './components/Footer.vue'
   </div>
 </template>
 
-<style lang="scss">
+<script setup lang="ts">
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
+import { useAuthStore } from './features/admin/stores/authStore';
 
+const authStore = useAuthStore();
+
+function tokenExpiration() {
+  setTimeout(() => {
+    authStore.checkTokenExpiration()
+  }, 50000)
+}
+tokenExpiration()
+</script>
+
+<style lang="scss">
 .app-container {
   height: 100vh;
   display: grid;
