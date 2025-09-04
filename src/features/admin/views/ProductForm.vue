@@ -150,6 +150,7 @@ const onSubmit = handleSubmit(async (dataProduct, {resetForm}) => {
       dataProduct.images = images.value;
       await productAdminStore.addProduct(dataProduct);
       setSuccessMessage('Le produit a bien été ajouté', resetForm);
+      router.push({path: '/productList'})
     } else {
       delete dataProduct.image;
       dataProduct.images = [...images.value];
@@ -171,7 +172,6 @@ function setSuccessMessage(message: string, resetForm: () => void) {
   setTimeout(() => {
     successMessage.value = '';
     resetForm();
-    router.push({path: '/productList'})
   }, 2000)
 }
 

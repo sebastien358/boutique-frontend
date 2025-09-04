@@ -8,7 +8,7 @@
         </div>
       </div>
       <div v-else>
-         <img src="../../../assets//images/not-found.webp" />
+        <img src="../../../assets/images/not-found.webp" />
       </div>
       <div class="d-flex align-items-center">
         <router-link v-if="product && product.id" :to="{ name: 'edit', params: { id: product.id }}">
@@ -17,24 +17,65 @@
         <button @click="deleteProduct(product.id)" class="btn btn-danger">Supprimer</button>
       </div>
     </div>
+    <div class="d-flex align-items-center pagination">
+      <button @click="previousPage" :disabled="currentPage === 1" class="btn">Précédent</button>
+      <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+      <button @click="nextPage" :disabled="currentPage === totalPages" class="btn">Suivant</button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useAdminProductStore } from '../stores/productAdminStore';
 
 const adminProductStore = useAdminProductStore();
-
 const products = computed(() => adminProductStore.products);
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+const totalItems = ref(0);
 
 onMounted(async () => {
-  await adminProductStore.adminGetProducts()
-})
+  try {
+    await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
+    totalItems.value = await adminProductStore.getTotalItems();
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+async function previousPage() {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+    try {
+      await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+async function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+    try {
+      await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
 
 async function deleteProduct(id: number) {
-  await adminProductStore.deleteProduct(id);
+  try {
+    await adminProductStore.deleteProduct(id);
+    // await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
+  } catch (error) {
+    console.error(error);
+  }
 }
+
+const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage.value));
 </script>
 
 <style scoped lang="scss">
@@ -50,15 +91,28 @@ async function deleteProduct(id: number) {
   grid-template-rows: auto;
   padding: 10px;
   gap: 40px;
- h3 {
-  margin-left: 10px;
- }
- img {
-  min-width: 70px;
-  min-height: 70px;
-  max-width: 70px;
-  max-height: 70px;
-  border-radius: 50%;
- }
+
+  h3 {
+    margin-left: 10px;
+  }
+
+  img {
+    min-width: 70px;
+    min-height: 70px;
+    max-width: 70px;
+    max-height: 70px;
+    border-radius: 50%;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  button {
+    margin: 0 10px;
+  }
 }
 </style>

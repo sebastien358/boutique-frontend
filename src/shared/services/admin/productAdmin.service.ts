@@ -1,9 +1,24 @@
 import axios from 'axios';
 import type { ProductFormInterface, ProductInterface } from '../interfaces';
 
-export async function axiosAdminGetProducts(): Promise<ProductInterface[] | null> {
+export async function axiosAdminGetProducts(page: 1, limit: 10): Promise<ProductInterface[] | null> {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/admin/products');
+    const response = await axios.get('http://127.0.0.1:8000/admin/products', {
+      params: {
+        page,
+        limit
+      }
+    });
+    return response.data;
+  } catch(e) {
+    console.error ('Erreur serveur : ', e);
+    throw e;
+  }
+}
+
+export async function axiosAdminGetTotalItems() {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/admin/products/count');
     return response.data;
   } catch(e) {
     console.error ('Erreur serveur : ', e);

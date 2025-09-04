@@ -2,6 +2,7 @@ import {
   axiosAddProduct,
   axiosAdminGetProduct,
   axiosAdminGetProducts,
+  axiosAdminGetTotalItems,
   axiosDeleteImage,
   axiosDeleteProduct,
   axiosUpdateProduct, 
@@ -21,20 +22,30 @@ export const useAdminProductStore = defineStore('adminProduct', {
     isLoading: true
   }),
   actions: {
-    async adminGetProducts() {
+    async adminGetProducts(page = 1, limit = 10) {
       try {
         this.isLoading = true;
-        const response = await axiosAdminGetProducts();
-        if (Array.isArray(response)) {
-          this.products = response;
+        const response = await axiosAdminGetProducts(page, limit);
+        if (Array.isArray(response.products)) {
+          this.products = response.products;
+          this.totalItems = response.total;
         } else {
-          this.products = [response];
+          this.products = [response.product];
+          this.totalItems = 1;
         }
         return this.products;
-      } catch(e) {
+      } catch (e) {
         console.error('Erreur de la récupération des produits', e);
       } finally {
         this.isLoading = false;
+      }
+    },
+    async getTotalItems() {
+      try {
+        const response = await axiosAdminGetTotalItems();
+        return response;
+      } catch(e) {
+        console.error('Erreur', e);
       }
     },
     async getProduct(id: number) {
@@ -64,8 +75,8 @@ export const useAdminProductStore = defineStore('adminProduct', {
         console.error('Erreur de l\'ajout d\'un produit', e);
       }
     },
-    async updateProduct(dataProduct: ProductFormInterface, id: string) { 
-      try { 
+    async updateProduct(dataProduct: ProductFormInterface, id: string) {
+      try {
         const productStore = useProductStore(); 
         const { title, description, price, images, category } = dataProduct; 
         const formData = new FormData();
@@ -79,20 +90,20 @@ export const useAdminProductStore = defineStore('adminProduct', {
             formData.append('filename[]', image);
           });
         }
-        const response = await axiosUpdateProduct(formData, id); 
-        const productIndex = productStore.products.findIndex(p => p.id === response.id); 
-        const index = this.products.findIndex(product => product.id === response.id); 
-        if (index !== -1) { 
-          this.products[index] = { ...this.products[index], ...response }; 
-          this.products[index].images = response.pictures; 
-        } 
-        if (productIndex !== -1) { 
-          productStore.products[productIndex] = { ...productStore.products[productIndex], ...response }; 
-          productStore.products[productIndex].images = response.pictures; 
-        } 
-      } catch(e) { 
-        console.error('Erreur de la modification d\'un produit', e); 
-      } 
+        const response = await axiosUpdateProduct(formData, id);
+        const index = this.products.findIndex(product => product.id === response.id);
+        const productIndex = productStore.products.findIndex(product => product.id === response.id);
+        if (index !== -1) {
+          this.products[index] = { ...this.products[index], ...response };
+          this.products[index].images = response.image
+        }
+        if (productIndex !== -1) {
+          productStore.products[productIndex] = { ...productStore.products[productIndex], ...response };
+          productStore.products[productIndex].images = response.image
+        }
+      } catch (e) {
+        console.error('Erreur de la modification d\'un produit', e);
+      }
     },
     async deleteProduct(id: number) {
       try {

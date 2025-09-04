@@ -70,7 +70,6 @@ export const useAuthStore = defineStore('auth', {
           }
         } catch (e) {
           console.log('Erreur lors du traitement du token', e);
-          this.logout(router);
         }
       }
     },
