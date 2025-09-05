@@ -24,7 +24,7 @@ const authStore = useAuthStore();
 function tokenExpiration() {
   setTimeout(() => {
     authStore.checkTokenExpiration()
-  }, 50000)
+  }, 5000)
 }
 tokenExpiration()
 </script>

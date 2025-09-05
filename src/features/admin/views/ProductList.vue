@@ -28,7 +28,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { useAdminProductStore } from '../stores/productAdminStore';
-import { axiosAdminGetProducts, axiosAdminGetTotalItems } from '@/shared/services/admin/productAdmin.service';
 
 const adminProductStore = useAdminProductStore();
 const products = computed(() => adminProductStore.products);
@@ -44,24 +43,12 @@ onMounted(async () => {
   }
 });
 
-// Dans votre composant
-async function getProducts() {
-  try {
-    const products = await axiosAdminGetProducts(currentPage.value, itemsPerPage.value);
-    const totalItems = await axiosAdminGetTotalItems(); 
-    products.value = products;
-    totalItems.value = totalItems;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 async function previousPage() {
   if (currentPage.value > 1) {
     currentPage.value--;
     try {
       await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-      totalItems.value = await adminProductStore.getTotalItems();
+      totalItems.value = adminProductStore.totalItems;
     } catch (error) {
       console.error(error);
     }
@@ -73,7 +60,7 @@ async function nextPage() {
     currentPage.value++;
     try {
       await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-      totalItems.value = await adminProductStore.getTotalItems();
+      totalItems.value = adminProductStore.totalItems;
     } catch (error) {
       console.error(error);
     }
@@ -84,20 +71,20 @@ async function deleteProduct(id: number) {
   try {
     await adminProductStore.deleteProduct(id);
     await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-    totalItems.value = await adminProductStore.getTotalItems();
+    totalItems.value = adminProductStore.totalItems;
     if (adminProductStore.products.length === 0 && currentPage.value > 1) {
       currentPage.value--;
       await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-      totalItems.value = await adminProductStore.getTotalItems();
+      totalItems.value = adminProductStore.totalItems;
     }
   } catch (error) {
     console.error(error);
   }
 }
 
-const totalPages = computed(() => {
-  return Math.ceil(adminProductStore.totalItems / itemsPerPage.value);
-});
+const totalPages = computed(() => 
+  Math.ceil(adminProductStore.totalItems / itemsPerPage.value)
+);
 </script>
 
 <style scoped lang="scss">

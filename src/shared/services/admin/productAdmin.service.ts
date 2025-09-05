@@ -16,16 +16,6 @@ export async function axiosAdminGetProducts(page: 1, limit: 3): Promise<ProductI
   }
 }
 
-export async function axiosAdminGetTotalItems() {
-  try {
-    const response = await axios.get('http://127.0.0.1:8000/admin/products/count');
-    return response.data;
-  } catch(e) {
-    console.error ('Erreur serveur : ', e);
-    throw e;
-  }
-}
-
 export async function axiosAdminGetProduct(id: number): Promise<ProductInterface | null> {
   try {
     const response = await axios.get(`http://127.0.0.1:8000/admin/product/${id}`);

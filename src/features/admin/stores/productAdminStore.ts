@@ -2,7 +2,6 @@ import {
   axiosAddProduct,
   axiosAdminGetProduct,
   axiosAdminGetProducts,
-  axiosAdminGetTotalItems,
   axiosDeleteImage,
   axiosDeleteProduct,
   axiosUpdateProduct, 
@@ -13,13 +12,15 @@ import { useProductStore } from '@/features/boutique/stores/productStore';
 
 interface StateAdminProduct {
   products: ProductInterface[],
-  isLoading: boolean
+  isLoading: boolean,
+  totalItems: number,
 }
 
 export const useAdminProductStore = defineStore('adminProduct', {
   state: (): StateAdminProduct => ({
     products: [],
-    isLoading: true
+    isLoading: true,
+    totalItems: 0
   }),
   actions: {
     async adminGetProducts(page = 1, limit = 3) {
@@ -40,14 +41,14 @@ export const useAdminProductStore = defineStore('adminProduct', {
         this.isLoading = false;
       }
     },
-    async getTotalItems() {
-      try {
-        const response = await axiosAdminGetTotalItems();
-        return response;
-      } catch(e) {
-        console.error('Erreur', e);
-      }
-    },
+    // async getTotalItems() {
+    //   try {
+    //     const response = await axiosAdminGetTotalItems();
+    //     return response;
+    //   } catch(e) {
+    //     console.error('Erreur', e);
+    //   }
+    // },
     async getProduct(id: number) {
       try {
         const response = await axiosAdminGetProduct(id);

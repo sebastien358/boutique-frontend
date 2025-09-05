@@ -63,7 +63,7 @@ export const useAuthStore = defineStore('auth', {
             const lastActivityTime = parseInt(lastActivity);
             if (currentTime - lastActivityTime > tokenDuration) {
               console.log('Token expiré : redirection vers la page de connexion');
-              this.logout(router);
+              // this.logout();
             } else {
               localStorage.setItem('lastActivity', currentTime);
             }
