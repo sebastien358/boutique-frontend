@@ -18,9 +18,9 @@
       </div>
     </div>
     <div class="d-flex align-items-center pagination">
-      <button @click="previousPage" :disabled="currentPage === 1" class="btn">Précédent</button>
-      <span>Page {{ currentPage }} sur {{ totalPages }}</span>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="btn">Suivant</button>
+      <button @click="previousPage()" :class="{'btn-pagination': true, 'disabled': currentPage === 1}" :disabled="currentPage === 1">Précédent</button>
+      <span>Page {{ currentPage }} - {{ totalPages }}</span>
+      <button @click="nextPage()" :class="{'btn-pagination': true, 'disabled': currentPage === totalPages}" :disabled="currentPage === totalPages">Suivant</button>
     </div>
   </div>
 </template>
@@ -29,61 +29,55 @@
 import { computed, onMounted, ref } from 'vue';
 import { useAdminProductStore } from '../stores/productAdminStore';
 
-const adminProductStore = useAdminProductStore();
-const products = computed(() => adminProductStore.products);
-const currentPage = ref(1);
-const itemsPerPage = ref(3);
-const totalItems = ref(0);
+const productAdminStore = useAdminProductStore();
+const products = computed(() => productAdminStore.products);
+const currentPage = ref<number>(1);
+const itemsPerPage = ref<number>(4);
 
 onMounted(async () => {
   try {
-    await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-  } catch (error) {
-    console.error(error);
+    await productAdminStore.adminGetProducts(currentPage.value, itemsPerPage.value);
+  } catch(e) {
+    console.error('Erreur de la récupération des produits');
   }
-});
+})
 
 async function previousPage() {
   if (currentPage.value > 1) {
     currentPage.value--;
-    try {
-      await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-      totalItems.value = adminProductStore.totalItems;
-    } catch (error) {
-      console.error(error);
-    }
+  }
+  try {
+    await productAdminStore.adminGetProducts(currentPage.value, itemsPerPage.value);
+  } catch(e) {
+    console.error(e);
   }
 }
 
 async function nextPage() {
   if (currentPage.value < totalPages.value) {
     currentPage.value++;
-    try {
-      await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-      totalItems.value = adminProductStore.totalItems;
-    } catch (error) {
-      console.error(error);
-    }
+  }
+  try {
+    await productAdminStore.adminGetProducts(currentPage.value, itemsPerPage.value);
+  } catch(e) {
+    console.error(e);
   }
 }
 
 async function deleteProduct(id: number) {
-  try {
-    await adminProductStore.deleteProduct(id);
-    await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-    totalItems.value = adminProductStore.totalItems;
-    if (adminProductStore.products.length === 0 && currentPage.value > 1) {
+   if (productAdminStore.products.length === 0 && currentPage.value > 1) {
       currentPage.value--;
-      await adminProductStore.adminGetProducts(currentPage.value, itemsPerPage.value);
-      totalItems.value = adminProductStore.totalItems;
     }
-  } catch (error) {
-    console.error(error);
+  try {
+    await productAdminStore.deleteProduct(id);
+    await productAdminStore.adminGetProducts(currentPage.value, itemsPerPage.value);
+  } catch(e) {
+    console.error(e);
   }
 }
 
 const totalPages = computed(() => 
-  Math.ceil(adminProductStore.totalItems / itemsPerPage.value)
+  Math.ceil(productAdminStore.totalItems / itemsPerPage.value)
 );
 </script>
 
@@ -119,9 +113,8 @@ const totalPages = computed(() =>
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-
-  button {
-    margin: 0 10px;
+  span {
+    font-size: 14px;
   }
 }
 </style>

@@ -1,10 +1,13 @@
 <template>
   <div v-if="!isLoading">
-    <div class="shop-product-list">
+    <div class="d-flex flex-column shop-product-list">
       <ShopProduct 
         v-for="product in products" :key="product.id"
         :product="product"
       />
+    </div>
+    <div class="d-flex justify-content-center mt-10">
+      <button @click="productStore.loadMoreProducts()" class="btn btn-primary">Charger plus...</button>
     </div>
   </div>
   <div v-else class="d-flex justify-content-center align-items-center spinner">
@@ -15,6 +18,8 @@
 <script setup lang="ts">
 import ShopProduct from '@/features/boutique/components/shop/ShopProduct.vue'
 import type { ProductInterface } from '@/shared/services/interfaces';
+import { useProductStore } from '../../stores/productStore';
+const productStore = useProductStore();
 
 defineProps<{
   products: ProductInterface[]
@@ -43,14 +48,12 @@ defineProps<{
     gap: 15px;
   }
   @include mixins.xl {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
   @include mixins.xxl {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 }
-
-
 </style>

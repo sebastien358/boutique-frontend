@@ -6,7 +6,11 @@ import { onMounted } from 'vue';
 const productStore = useProductStore();
 
 onMounted(async () => {
-  await productStore.getProducts();
+  try {
+    await productStore.getProducts();
+  } catch(e) {
+    console.error('Erreur de la récupération des produits');
+  }
 })
 </script>
 

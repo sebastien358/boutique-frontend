@@ -13,7 +13,7 @@ import { useProductStore } from '@/features/boutique/stores/productStore';
 interface StateAdminProduct {
   products: ProductInterface[],
   isLoading: boolean,
-  totalItems: number,
+  totalItems: number 
 }
 
 export const useAdminProductStore = defineStore('adminProduct', {
@@ -23,16 +23,15 @@ export const useAdminProductStore = defineStore('adminProduct', {
     totalItems: 0
   }),
   actions: {
-    async adminGetProducts(page = 1, limit = 3) {
+    async adminGetProducts(currentPage: number, itemsPerPage: number) {
       try {
         this.isLoading = true;
-        const response = await axiosAdminGetProducts(page, limit);
+        const response = await axiosAdminGetProducts(currentPage, itemsPerPage);
         if (Array.isArray(response.products)) {
           this.products = response.products;
           this.totalItems = response.total;
         } else {
-          this.products = [response.product];
-          this.totalItems = 1;
+          this.products = [response.products];
         }
         return this.products;
       } catch (e) {
@@ -41,14 +40,6 @@ export const useAdminProductStore = defineStore('adminProduct', {
         this.isLoading = false;
       }
     },
-    // async getTotalItems() {
-    //   try {
-    //     const response = await axiosAdminGetTotalItems();
-    //     return response;
-    //   } catch(e) {
-    //     console.error('Erreur', e);
-    //   }
-    // },
     async getProduct(id: number) {
       try {
         const response = await axiosAdminGetProduct(id);
@@ -108,8 +99,10 @@ export const useAdminProductStore = defineStore('adminProduct', {
     },
     async deleteProduct(id: number) {
       try {
+        const productStore = useProductStore();
         const response = await axiosDeleteProduct(id);
         this.products = this.products.filter(p => p.id !== id);
+        productStore.products = this.products.filter(p => p.id !== id);
         return response;
       } catch (error) {
         console.error(error);

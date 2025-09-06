@@ -51,21 +51,29 @@ export const useAuthStore = defineStore('auth', {
       const token = localStorage.getItem('token');
       const lastActivity = localStorage.getItem('lastActivity');
       const tokenDuration = 15 * 60 * 1000; // 15 minutes
+
       if (!token) {
         console.log('Token non trouvé');
       } else {
         try {
           const decodedToken = jwtDecode(token);
           const currentTime = new Date().getTime();
-          if (!lastActivity) {
-            localStorage.setItem('lastActivity', currentTime);
+          const tokenExpiration = decodedToken.exp * 1000; // Conversion en millisecondes
+
+          if (currentTime > tokenExpiration) {
+            console.log('Token expiré : redirection vers la page de connexion');
+            // this.logout();
           } else {
-            const lastActivityTime = parseInt(lastActivity);
-            if (currentTime - lastActivityTime > tokenDuration) {
-              console.log('Token expiré : redirection vers la page de connexion');
-              // this.logout();
-            } else {
+            if (!lastActivity) {
               localStorage.setItem('lastActivity', currentTime);
+            } else {
+              const lastActivityTime = parseInt(lastActivity);
+              if (currentTime - lastActivityTime > tokenDuration) {
+                console.log('Session expirée : redirection vers la page de connexion');
+                // this.logout();
+              } else {
+                localStorage.setItem('lastActivity', currentTime);
+              }
             }
           }
         } catch (e) {

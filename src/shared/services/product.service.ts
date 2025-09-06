@@ -1,9 +1,14 @@
 import axios from 'axios';
 import type { ProductInterface } from './interfaces';
 
-export async function axiosGetProducts(): Promise<ProductInterface[] | null> {
+export async function axiosGetProducts(offset = 0, limit = 2): Promise<ProductInterface[] | null> {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/products');
+    const response = await axios.get('http://127.0.0.1:8000/products', {
+      params: {
+        offset,
+        limit
+      }
+    });
     return response.data;
   } catch(e) {
     console.error('Erreur serveur : ', e);

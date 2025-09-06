@@ -1,12 +1,12 @@
 import axios from 'axios';
 import type { ProductFormInterface, ProductInterface } from '../interfaces';
 
-export async function axiosAdminGetProducts(page: 1, limit: 3): Promise<ProductInterface[] | null> {
+export async function axiosAdminGetProducts(currentPage: number, itemsPerPage: number): Promise<ProductInterface[] | null> {
   try {
     const response = await axios.get('http://127.0.0.1:8000/admin/products', {
       params: {
-        page,
-        limit
+        page: currentPage,
+        limit: itemsPerPage
       }
     });
     return response.data;

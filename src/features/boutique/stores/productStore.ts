@@ -7,7 +7,10 @@ interface StateProduct {
   isLoading: boolean,
   searchTerm: string,
   priceRange: [number, number],
-  currentCategory: string
+  currentCategory: string,
+  offset: number,
+  limit: number,
+  hasMoreProducts: boolean
 }
 
 export const useProductStore = defineStore('products', {
@@ -16,25 +19,30 @@ export const useProductStore = defineStore('products', {
     isLoading: true,
     searchTerm: '',
     priceRange: [0, 4000],
-    currentCategory: 'all'
+    currentCategory: 'all',
+    offset: 0,
+    limit: 2,
+    hasMoreProducts: true,
   }),
   actions: {
     async getProducts(append = false) {
       try {
         this.isLoading = true
-        const response = await axiosGetProducts();
+        const response = await axiosGetProducts(this.offset, this.limit);
         if (Array.isArray(response)) {
           if (append) {
             this.products = [...this.products, ...response];
           } else {
             this.products = response;
           }
+          this.hasMoreProducts = response.length === this.limit;
         } else {
           if (append) {
             this.products = [...this.products, response];
           } else {
             this.products = [response];
           }
+          this.hasMoreProducts = false;
         }
       } catch(e) {
         console.error('Erreur de la récupération des produits', e);
@@ -42,10 +50,18 @@ export const useProductStore = defineStore('products', {
         this.isLoading = false
       }
     },
+    async loadMoreProducts() {
+      this.offset += this.limit;
+      await this.getProducts(true);
+    },
     async searchProduct(search: string) {
       try {
-        const response = await axiosSearchProducts(search.trim());
-        response ? this.products = response : this.products = [];
+        const response = await axiosSearchProducts(search);
+        if (response) {
+          this.products = response;
+        } else {
+          this.products = [];
+        }
       } catch(e) {
         console.error('Erreur search product', e);
       }

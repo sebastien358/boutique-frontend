@@ -1,8 +1,8 @@
 .btn {
+    cursor: pointer;
     padding: 10px;
     border: 0;
     border-radius: var(--border-radius);
-    cursor: pointer;
     font-weight: 500;
     transition: background-color 0.2s;
     font-size: 12px;
@@ -29,8 +29,22 @@
 .btn-success {
     background-color: var(--success-1);
     color: var(--text-primary-color);
-
     &:hover {
         background-color: var(--success-2);
+    }
+}
+
+.btn-pagination {
+    cursor: pointer;
+    background-color: var(--gray-3);
+    color: var(--text-primary-color);
+    padding: 10px;
+    width: 75px;
+    margin: 0 8px;
+    font-size: 12px;
+    border-radius: var(--border-radius);
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 }
