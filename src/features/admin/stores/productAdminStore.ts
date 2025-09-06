@@ -13,7 +13,7 @@ import { useProductStore } from '@/features/boutique/stores/productStore';
 interface StateAdminProduct {
   products: ProductInterface[],
   isLoading: boolean,
-  totalItems: number 
+  totalItems: number
 }
 
 export const useAdminProductStore = defineStore('adminProduct', {
@@ -23,7 +23,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
     totalItems: 0
   }),
   actions: {
-    async adminGetProducts(currentPage: 1, itemsPerPage: 10) {
+    async adminGetProducts(currentPage = 1, itemsPerPage = 10) {
       try {
         this.isLoading = true;
         const response = await axiosAdminGetProducts(currentPage, itemsPerPage);
@@ -32,6 +32,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
           this.totalItems = response.total;
         } else {
           this.products = [response.products];
+          this.totalItems = 0;
         }
         return this.products;
       } catch (e) {

@@ -9,7 +9,7 @@ interface StateProduct {
   priceRange: [number, number],
   currentCategory: string,
   offset: number,
-  limit: number,
+  limit: number,  
   hasMoreProducts: boolean
 }
 
@@ -22,13 +22,13 @@ export const useProductStore = defineStore('products', {
     currentCategory: 'all',
     offset: 0,
     limit: 10,
-    hasMoreProducts: true,
+    hasMoreProducts: true
   }),
   actions: {
     async getProducts(append = false) {
       try {
         this.isLoading = true
-        const response = await axiosGetProducts(this.offset = 0, this.limit = 10);
+        const response = await axiosGetProducts(this.offset = 0, this.limit = 20);
         if (Array.isArray(response)) {
           if (append) {
             this.products = [...this.products, ...response];
@@ -45,18 +45,18 @@ export const useProductStore = defineStore('products', {
           this.hasMoreProducts = false;
         }
       } catch(e) {
-        console.error('Erreur de la récupération des produits', e);
+        console.error('Erreur: Récupération des produits', e);
       } finally {
         this.isLoading = false
       }
     },
-    async loadMoreProduct() {
+    async loadMoreProducts() {
       try {
         this.offset += this.limit;
         await this.getProducts(true);
         return true;
       } catch(e) {
-        console.error('Erreur de la récupération des produits, button (loader)', e);
+        console.error('Erreur: Button plus de produits...', e);
       }
     },
     async searchProduct(search: string) {
@@ -68,7 +68,7 @@ export const useProductStore = defineStore('products', {
           this.products = [];
         }
       } catch(e) {
-        console.error('Erreur search product', e);
+        console.error('Erreur: Search products', e);
       }
     },
     async filteredPrice(priceRange: number[]) {
@@ -78,7 +78,7 @@ export const useProductStore = defineStore('products', {
         const response = await axiosFilteredProductsPrice(minPrice, maxPrice);
         response ? this.products = response : this.products = [];
       } catch(e) {
-        console.error('Erreur de la filtration des produits par leurs prix', e);
+        console.error('Erreur: Filtration des produits par prix', e);
       }
     },
     async filteredCategory(category: string) {
@@ -90,7 +90,7 @@ export const useProductStore = defineStore('products', {
           response ? this.products = response : this.products = [];
         }
       } catch(e) {
-        console.error('Erreur de la filtration des produits par leurs catégoies', e);
+        console.error('Erreur: Filtration des produits par catégoies', e);
       }
     },
   }

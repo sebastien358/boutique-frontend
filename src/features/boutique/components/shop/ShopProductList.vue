@@ -8,7 +8,7 @@
     </div>
     <div class="d-flex justify-content-center mt-10">
       <button 
-        @click="productStore.loadMoreProduct()"
+        @click="emit('loadMoreProducts')"
         v-if="products.length" 
         class="btn btn-primary"
         >
@@ -24,12 +24,14 @@
 <script setup lang="ts">
 import ShopProduct from '@/features/boutique/components/shop/ShopProduct.vue'
 import type { ProductInterface } from '@/shared/services/interfaces';
-import { useProductStore } from '../../stores/productStore';
-const productStore = useProductStore();
 
 defineProps<{
   products: ProductInterface[]
   isLoading: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'loadMoreProducts'): void
 }>()
 </script>
 

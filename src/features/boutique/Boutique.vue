@@ -12,11 +12,20 @@ onMounted(async () => {
     console.error('Erreur de la récupération des produits');
   }
 })
+
+async function loadMoreProducts() {
+  try {
+    await productStore.loadMoreProducts()
+  } catch(e) {
+    console.log(e);
+  }
+}
 </script>
 
 <template>
   <div>
     <Shop 
+      @load-more-products="loadMoreProducts"
       :products="productStore.products" 
       :isLoading="productStore.isLoading"
     />

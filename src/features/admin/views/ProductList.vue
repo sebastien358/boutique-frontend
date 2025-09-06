@@ -18,9 +18,20 @@
       </div>
     </div>
     <div class="d-flex align-items-center pagination">
-      <button @click="previousPage()" :class="{'btn-pagination': true, 'disabled': currentPage === 1}" :disabled="currentPage === 1">Précédent</button>
+      <button 
+        @click="previousPage()" 
+        :class="{'btn-pagination': true, 'disabled': currentPage === 1}" 
+        :disabled="currentPage === 1">
+        Précédent
+      </button>
       <span>Page {{ currentPage }} - {{ totalPages }}</span>
-      <button @click="nextPage()" :class="{'btn-pagination': true, 'disabled': currentPage === totalPages}" :disabled="currentPage === totalPages">Suivant</button>
+      <button 
+        @click="nextPage()" 
+        :class="{'btn-pagination': true, 'disabled': currentPage === totalPages}" 
+        :disabled="currentPage === totalPages"
+        >
+        Suivant
+      </button>
     </div>
   </div>
 </template>
@@ -38,20 +49,20 @@ onMounted(async () => {
   try {
     await productAdminStore.adminGetProducts(currentPage.value, itemsPerPage.value);
   } catch(e) {
-    console.error('Erreur de la récupération des produits');
+    console.error('Erreur de la récupération des produits', e);
   }
-})
+});
 
 async function previousPage() {
   if (currentPage.value > 1) {
     currentPage.value--;
-  }
+  }  
   try {
     await productAdminStore.adminGetProducts(currentPage.value, itemsPerPage.value);
   } catch(e) {
     console.error(e);
   }
-}
+};
 
 async function nextPage() {
   if (currentPage.value < totalPages.value) {
@@ -62,13 +73,13 @@ async function nextPage() {
   } catch(e) {
     console.error(e);
   }
-}
+};
 
 async function deleteProduct(id: number) {
-   if (productAdminStore.products.length === 0 && currentPage.value > 1) {
-      currentPage.value--;
-    }
-  try {
+  if (productAdminStore.products.length === 0 && currentPage.value > 1) {
+    currentPage.value--;
+  }
+  try { 
     await productAdminStore.deleteProduct(id);
     await productAdminStore.adminGetProducts(currentPage.value, itemsPerPage.value);
   } catch(e) {

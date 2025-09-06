@@ -17,6 +17,10 @@ const state = reactive<{
   open: !matchMedia('(max-width: 992px)').matches,
   isMobile: matchMedia('(max-width: 992px)').matches
 })
+
+const emit = defineEmits<{
+  (e: 'loadMoreProducts'): void
+}>()
 </script>
 
 <template>
@@ -33,6 +37,7 @@ const state = reactive<{
     <div class="d-flex flex-column shop">
       <button @click="state.open = !state.open" class="btn btn-primary">Filtrer les produits</button>
       <ShopProductList 
+        @load-more-products="emit('loadMoreProducts')"
         :products="products" 
         :isLoading="isLoading"
         class="scrollable"

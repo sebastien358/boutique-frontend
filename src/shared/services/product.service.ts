@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { ProductInterface } from './interfaces';
 
-export async function axiosGetProducts(offset = 0, limit = 10): Promise<ProductInterface[] | null> {
+export async function axiosGetProducts(offset: 0, limit: 20): Promise<ProductInterface[] | null> {
   try {
     const response = await axios.get('http://127.0.0.1:8000/products', {
       params: {
