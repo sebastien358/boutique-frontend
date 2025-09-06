@@ -23,7 +23,7 @@ export const useAdminProductStore = defineStore('adminProduct', {
     totalItems: 0
   }),
   actions: {
-    async adminGetProducts(currentPage: number, itemsPerPage: number) {
+    async adminGetProducts(currentPage: 1, itemsPerPage: 10) {
       try {
         this.isLoading = true;
         const response = await axiosAdminGetProducts(currentPage, itemsPerPage);

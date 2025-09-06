@@ -7,7 +7,13 @@
       />
     </div>
     <div class="d-flex justify-content-center mt-10">
-      <button @click="productStore.loadMoreProducts()" class="btn btn-primary">Charger plus...</button>
+      <button 
+        @click="productStore.loadMoreProduct()"
+        v-if="products.length" 
+        class="btn btn-primary"
+        >
+        Plus de produits...
+      </button>
     </div>
   </div>
   <div v-else class="d-flex justify-content-center align-items-center spinner">

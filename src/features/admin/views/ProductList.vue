@@ -32,7 +32,7 @@ import { useAdminProductStore } from '../stores/productAdminStore';
 const productAdminStore = useAdminProductStore();
 const products = computed(() => productAdminStore.products);
 const currentPage = ref<number>(1);
-const itemsPerPage = ref<number>(4);
+const itemsPerPage = ref<number>(10);
 
 onMounted(async () => {
   try {

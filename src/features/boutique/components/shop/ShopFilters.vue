@@ -67,20 +67,32 @@ const productStore = useProductStore();
 // Filtration des produits : SEARCH
 
 async function filteredProductBySearch() {
-  await productStore.searchProduct(productStore.searchTerm);
+  try {
+    await productStore.searchProduct(productStore.searchTerm);
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 // Filtration des produits : PRIX
 
 async function filteredProductByPrice(priceRange: number[]) {
-  await productStore.filteredPrice(priceRange);
+  try {
+    await productStore.filteredPrice(priceRange);
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 // Filtration des produits : CATÉGORIES
 
 async function filteredProductByCategory(category: string) {
-  await productStore.filteredCategory(category);
-  productStore.currentCategory = category;
+  try {
+    await productStore.filteredCategory(category);
+    productStore.currentCategory = category;
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 // Initialisation des produits
@@ -90,6 +102,7 @@ function initFilteredProducts() {
   productStore.searchTerm = '';
   productStore.priceRange = [0, 4000];
   productStore.currentCategory = 'all';
+  productStore.offset = 0;
 }
 </script>
 
